@@ -7,6 +7,9 @@
 			<div class="logo">
 				<i class="iconfont icon-logo-fb"></i>
 			</div>
+			<div class="login">
+				<div>登录</div>
+			</div>
 		</div>
 		<div class="red-line"></div>
 	</div>
@@ -29,6 +32,7 @@
 		border-bottom 1px solid #000
 		box-shadow inset 0 0 1px 0px #dcd4d4
 		background linear-gradient(#484848, #1b1a1a)
+		z-index 999
 		.wrap
 			position relative
 			.logo
@@ -40,6 +44,13 @@
 					position absolute
 					top -40px
 					left 55px
+			.login
+				position absolute
+				top 0px
+				right 0px
+				margin 0 30px
+				color #fff
+				line-height 68px
 		.red-line
 			position relative
 			height 4px

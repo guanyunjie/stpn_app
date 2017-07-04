@@ -3,7 +3,7 @@
 */
 <template>
 	<div class="view">
-		<h3 class="title">查看业务界面</h3>
+		<app-title :name="'查看业务路由'"></app-title>
 		<div class="v-business">
 			<ul>
 				<router-link class="item" tag="li" to="/business/view/biz/123">
@@ -108,32 +108,34 @@
 				</div>
 			</div>
 			<div class="btns">
-				<router-link to="/business/view/router">路由</router-link>
-				<router-link to="/business/view/xn">性能</router-link>
+				<router-link to="/business/view/rout/123">路由</router-link>
+				<router-link to="/business/view/xn/23234">性能</router-link>
 			</div>
+		</div>
+		<div class="ext">
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	export default {};
+	import title from '../common/title.vue';
+
+	export default {
+	  	components: {
+	  	  	'app-title': title
+		}
+	};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.view
 		text-align left
-		.title
-			font-size 18px
-			color #333
-			background #e4e4e4
-			font-weight bold
-			padding 15px 0 8px 20px
 		.v-business
 			padding 10px 150px 10px 15px
 			background #fafafa
 			position relative
-			border-top 1px solid #ccc
 			border-bottom 1px solid #ccc
 			ul
 				display flex

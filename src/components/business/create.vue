@@ -3,12 +3,19 @@
 */
 <template>
 	<div>
+		<app-title :name="'创建业务步骤'"></app-title>
 		this is create!!!
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	export default {};
+	import title from '../common/title.vue';
+
+	export default {
+	  	components: {
+	  	  	'app-title': title
+		}
+	};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

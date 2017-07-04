@@ -9,6 +9,8 @@ import topology from './components/topology/topology.vue';
 import view from './components/business/view.vue';
 import create from './components/business/create.vue';
 import panel from './components/panel/panel.vue';
+import rout from './components/rout/rout.vue';
+import xn from './components/xn/xn.vue';
 
 Vue.config.productionTip = false
 
@@ -18,6 +20,10 @@ Vue.use(VResource);
 const router = new VRouter({
 	linkActiveClass: 'active',
 	routes: [
+		{
+			path: '/',
+			component: topology
+		},
 		{
 			path: '/topology/',
 			component: topology,
@@ -29,8 +35,18 @@ const router = new VRouter({
 			]
 		},
 		{
-			path: '/business/view',
-			component: view
+			path: '/business/view/',
+			component: view,
+			children: [
+				{
+					path: 'rout/:id',
+					component: rout
+				},
+				{
+					path: 'xn/:id',
+					component: xn
+				}
+			]
 		},
 		{
 			path: '/business/create',
