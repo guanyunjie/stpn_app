@@ -47,7 +47,7 @@
 
 	.m-wrap
 		height 100%
-		background #f9f9f9
+		background #eaeaea
 		border-right 1px solid #ccc
 		.m-co
 			padding-bottom 35px

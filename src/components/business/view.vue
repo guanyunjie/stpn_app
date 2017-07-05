@@ -6,13 +6,13 @@
 		<app-title :name="'查看业务路由'"></app-title>
 		<div class="v-business">
 			<h4 class="yw-title">业务列表</h4>
-			<ul>
+			<ul v-if="items.length > 0">
 				<router-link class="item"
 							 v-for="(item, index) in items"
 							 tag="li"
 							 v-show="index >= 7 * selectIndex && index < 7 * selectIndex + 7 || isListShow"
 							 active-class="list-active"
-							 @click.native="selectYW(item.id, index)"
+							 @click.native="selectYW(item, index)"
 							 :to="{path: '/business/view/'+item.id}">
 					<a>
 						<span>{{item.name}}</span>
@@ -23,52 +23,53 @@
 				<span v-text="isListShow ? '收起' : '打开'"></span>
 			</button>
 		</div>
-		<div class="view-wrap">
-			<div class="detail" v-show="selectBusinessId">
+		<div class="view-wrap" v-show="selectBusiness.id">
+			<div class="detail">
 				<h4 class="bas-title">基础信息</h4>
 				<table class="view-tab">
 					<tbody>
 						<tr>
 							<th>保护类型</th>
-							<td>1+1保护</td>
+							<td>{{selectBusiness.prototype}}</td>
 						</tr>
 						<tr>
 							<th>VPN类型</th>
-							<td>L3vPn</td>
+							<td>{{selectBusiness.vpnType}}</td>
 						</tr>
 						<tr>
 							<th>带宽</th>
-							<td>1000M</td>
+							<td>{{selectBusiness.dk}}</td>
 						</tr>
 						<tr>
 							<th>路由策略</th>
-							<td>最小跳数</td>
+							<td>{{selectBusiness.routCL}}</td>
 						</tr>
 						<tr>
 							<th>扩展</th>
-							<td>是粉色粉色方式</td>
+							<td>{{selectBusiness.else}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<div class="view-wrap">
+
+		<div class="view-wrap" v-show="selectBusiness.id">
 			<h4 class="lx-title">
 				<span>路由性能信息:</span>
 				<div class="btns">
 					<router-link class="btn-cb"
-								 :to="{path: '/business/view/'+selectBusinessId+'/rout'}"
+								 :to="{path: '/business/view/'+selectBusiness.id+'/rout'}"
 								 active-class="rx-active">
 						路由
 					</router-link>
 					<router-link class="btn-cb"
-								 :to="{path: '/business/view/'+selectBusinessId+'/xn'}"
+								 :to="{path: '/business/view/'+selectBusiness.id+'/xn'}"
 								 active-class="rx-active">
 						性能
 					</router-link>
 				</div>
 			</h4>
-			<div class="ext" v-show="selectBusinessId">
+			<div class="ext" v-show="selectBusiness.id">
 				<router-view></router-view>
 			</div>
 		</div>
@@ -80,26 +81,23 @@
 
 	export default {
 	  	created() {
-	  	  	this.selectBusinessId = '';
-	  	  	for (let i = 0; i < 100; i++) {
-	  	  	  	let obj = {
-	  	  	  	  	id: 'id' + i,
-					name: 'name' + i
-				};
-	  	  	  	this.items.push(obj);
-			}
+	  	  	let _this = this;
+
+			this.$http.get('/api/ywList').then((res) => {
+				_this.items = res.data.result;
+			});
 		},
 	  	data() {
 	  	  	return {
 			  	items: [],
 				selectIndex: 0,
-				selectBusinessId: '',
+				selectBusiness: {},
 				isListShow: true
 		  	}
 		},
 		methods: {
-			selectYW(id, index) {
-			  	this.selectBusinessId = id;
+			selectYW(item, index) {
+			  	this.selectBusiness = item;
 			  	this.selectIndex = Math.floor(index / 7);
 			  	this.isListShow = false;
 			}
@@ -117,7 +115,7 @@
 		background #f2f2f2
 		height 100%
 		.list-active
-			background #666 !important
+			background #d8d8d8 !important
 		.rx-active
 			color #333 !important
 			background #fff
@@ -179,7 +177,7 @@
 				.bas-title
 					padding-left 26px
 					margin 0 auto
-					background #ff7200
+					background #d49665
 					margin-bottom 20px
 					color #fff
 					font-size 20px

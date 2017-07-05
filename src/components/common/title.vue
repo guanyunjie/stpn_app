@@ -15,11 +15,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.title
-		font-size 18px
+		font-size 16px
 		text-align left
 		color #333
-		background #e4e4e4
+		background linear-gradient(#a2a2a2, #8e8c8c)
+		line-height 46px
+		padding-left 26px
 		font-weight bold
-		padding 15px 0 8px 20px
 		border-bottom 1px solid #ccc
 </style>
