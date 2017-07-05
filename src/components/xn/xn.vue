@@ -3,7 +3,7 @@
 */
 
 <template>
-	<div>
+	<div class="xn">
 		this is xingneng
 	</div>
 </template>
@@ -14,5 +14,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+	.xn
+		min-height 300px
 </style>

@@ -3,13 +3,11 @@
 		<div class="app-head">
 			<app-head></app-head>
 		</div>
-		<div class="app-body">
-			<div class="menu">
-				<app-menu></app-menu>
-			</div>
-			<div class="main">
-				<router-view></router-view>
-			</div>
+		<div class="menu">
+			<app-menu></app-menu>
+		</div>
+		<div class="main">
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
@@ -40,20 +38,23 @@
 		width 100%
 		right 0px
 		left 0px
-	.app-body
-		position absolute
-		display flex
-		top 75px
+		z-index 999
+	.menu
+		width 200px
+		position fixed
 		left 0px
+		top 74px
 		bottom 0px
+		height 100%
+	.main
+		margin 74px 0 0 200px
+		position absolute
+		top 0px
+		left 0px
 		right 0px
-		width 100%
-		margin 0px
-		padding 0px
-		.menu
-			width 200px
-		.main
-			flex 1 1 auto
+		bottom 0px
+		background #f2f2f2
+		overflow scroll
 	.active
 		background #ccc
 		&:hover

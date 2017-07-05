@@ -2,9 +2,49 @@
 * Created by Guanyunjie on 2017/7/4.
 */
 <template>
-	<div>
-		<app-title :name="'创建业务步骤'"></app-title>
-		this is create!!!
+	<div class="s-create">
+		<app-title :name="'配置业务基本属性'"></app-title>
+		<div class="c-wrap">
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+			<div class="c-item">
+				<span>保护类型：</span>
+				<div class="inp">
+					<input type="text">
+				</div>
+			</div>
+		</div>
+		<router-link to="/business/create/step1">
+			下一步
+		</router-link>
 	</div>
 </template>
 

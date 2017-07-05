@@ -11,6 +11,10 @@ import create from './components/business/create.vue';
 import panel from './components/panel/panel.vue';
 import rout from './components/rout/rout.vue';
 import xn from './components/xn/xn.vue';
+import step1 from './components/step/step1.vue';
+import step2 from './components/step/step2.vue';
+import step3 from './components/step/step3.vue';
+import step4 from './components/step/step4.vue';
 
 Vue.config.productionTip = false
 
@@ -35,15 +39,19 @@ const router = new VRouter({
 			]
 		},
 		{
-			path: '/business/view/',
+			path: '/business/view',
+			component: view
+		},
+		{
+			path: '/business/view/:yw',
 			component: view,
 			children: [
 				{
-					path: 'rout/:id',
+					path: 'rout',
 					component: rout
 				},
 				{
-					path: 'xn/:id',
+					path: 'xn',
 					component: xn
 				}
 			]
@@ -51,6 +59,22 @@ const router = new VRouter({
 		{
 			path: '/business/create',
 			component: create
+		},
+		{
+			path: '/business/create/step1',
+			component: step1
+		},
+		{
+			path: '/business/create/step2',
+			component: step2
+		},
+		{
+			path: '/business/create/step3',
+			component: step3
+		},
+		{
+			path: '/business/create/step4',
+			component: step4
 		}
 	]
 });

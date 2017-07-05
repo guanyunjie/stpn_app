@@ -5,115 +5,72 @@
 	<div class="view">
 		<app-title :name="'查看业务路由'"></app-title>
 		<div class="v-business">
+			<h4 class="yw-title">业务列表</h4>
 			<ul>
-				<router-link class="item" tag="li" to="/business/view/biz/123">
+				<router-link class="item"
+							 v-for="(item, index) in items"
+							 tag="li"
+							 v-show="index >= 7 * selectIndex && index < 7 * selectIndex + 7 || isListShow"
+							 active-class="list-active"
+							 @click.native="selectYW(item.id, index)"
+							 :to="{path: '/business/view/'+item.id}">
 					<a>
-						<span>biz1</span>
+						<span>{{item.name}}</span>
 					</a>
 				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/234">
-					<a>biz2</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/432">
-					<a>biz3</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/623">
-					<a>biz4</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/789">
-					<a>biz5</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/125">
-					<a>biz6</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/465">
-					<a>biz7</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/432">
-					<a>biz3</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/623">
-					<a>biz4</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/789">
-					<a>biz5</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/125">
-					<a>biz6</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/465">
-					<a>biz7</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/432">
-					<a>biz3</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/623">
-					<a>biz4</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/789">
-					<a>biz5</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/125">
-					<a>biz6</a>
-				</router-link>
-				<router-link class="item" tag="li" to="/business/view/biz/465">
-					<a>biz7</a>
-				</router-link>
 			</ul>
-			<button type="button" class="oper-biz">收起</button>
+			<button type="button" class="oper-biz" @click="isListShow = !isListShow">
+				<span v-text="isListShow ? '收起' : '打开'"></span>
+			</button>
 		</div>
-		<div class="detail">
-			<div class="d-wrap">
-				<div class="detail-item">
-					<div class="item-f">
-						<span>保护类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-					<div class="item-r">
-						<span>VPN类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-				</div>
-				<div class="detail-item">
-					<div class="item-f">
-						<span>保护类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-					<div class="item-r">
-						<span>VPN类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-				</div>
-				<div class="detail-item">
-					<div class="item-f">
-						<span>保护类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-					<div class="item-r">
-						<span>VPN类型：</span>
-						<div class="inp">
-							<input type="text">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="btns">
-				<router-link to="/business/view/rout/123">路由</router-link>
-				<router-link to="/business/view/xn/23234">性能</router-link>
+		<div class="view-wrap">
+			<div class="detail" v-show="selectBusinessId">
+				<h4 class="bas-title">基础信息</h4>
+				<table class="view-tab">
+					<tbody>
+						<tr>
+							<th>保护类型</th>
+							<td>1+1保护</td>
+						</tr>
+						<tr>
+							<th>VPN类型</th>
+							<td>L3vPn</td>
+						</tr>
+						<tr>
+							<th>带宽</th>
+							<td>1000M</td>
+						</tr>
+						<tr>
+							<th>路由策略</th>
+							<td>最小跳数</td>
+						</tr>
+						<tr>
+							<th>扩展</th>
+							<td>是粉色粉色方式</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-		<div class="ext">
-			<router-view></router-view>
+		<div class="view-wrap">
+			<h4 class="lx-title">
+				<span>路由性能信息:</span>
+				<div class="btns">
+					<router-link class="btn-cb"
+								 :to="{path: '/business/view/'+selectBusinessId+'/rout'}"
+								 active-class="rx-active">
+						路由
+					</router-link>
+					<router-link class="btn-cb"
+								 :to="{path: '/business/view/'+selectBusinessId+'/xn'}"
+								 active-class="rx-active">
+						性能
+					</router-link>
+				</div>
+			</h4>
+			<div class="ext" v-show="selectBusinessId">
+				<router-view></router-view>
+			</div>
 		</div>
 	</div>
 </template>
@@ -122,6 +79,31 @@
 	import title from '../common/title.vue';
 
 	export default {
+	  	created() {
+	  	  	this.selectBusinessId = '';
+	  	  	for (let i = 0; i < 100; i++) {
+	  	  	  	let obj = {
+	  	  	  	  	id: 'id' + i,
+					name: 'name' + i
+				};
+	  	  	  	this.items.push(obj);
+			}
+		},
+	  	data() {
+	  	  	return {
+			  	items: [],
+				selectIndex: 0,
+				selectBusinessId: '',
+				isListShow: true
+		  	}
+		},
+		methods: {
+			selectYW(id, index) {
+			  	this.selectBusinessId = id;
+			  	this.selectIndex = Math.floor(index / 7);
+			  	this.isListShow = false;
+			}
+		},
 	  	components: {
 	  	  	'app-title': title
 		}
@@ -132,12 +114,30 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.view
 		text-align left
+		background #f2f2f2
+		height 100%
+		.list-active
+			background #666 !important
+		.rx-active
+			color #333 !important
+			background #fff
 		.v-business
-			padding 10px 150px 10px 15px
-			background #fafafa
+			background #fff
+			width 90%
+			margin 30px auto
 			position relative
-			border-bottom 1px solid #ccc
+			border 1px solid #ccc
+			.yw-title
+				margin 0 auto
+				padding-left 26px
+				color #4c4c4c
+				font-size 20px
+				font-weight bold
+				border-bottom 1px dashed #ccc
+				line-height 50px
 			ul
+				width 90%
+				margin 10px auto
 				display flex
 				flex-direction row
 				flex-wrap wrap
@@ -150,46 +150,77 @@
 					background #fff
 					text-align center
 					margin 10px 15px
+					a
+						display block
 			.oper-biz
+				padding 0px 25px
+				line-height 22px
+				font-size 12px
+				border 1px solid #ccc
+				outline none
+				cursor pointer
+				border-radius 4px
+				background #fff
+				color #333
 				position absolute
-				bottom 8px
-				right 10px
+				top 11px
+				right 20px
+		.view-wrap
+			width 90%
+			background #fff
+			border 1px solid #ddd
+			margin 30px auto
+			.detail
+				width 100%
+				display block
+				padding 0 0 70px 0
+				border-bottom 1px solid #ccc
+				position relative
+				.bas-title
+					padding-left 26px
+					margin 0 auto
+					background #ff7200
+					margin-bottom 20px
+					color #fff
+					font-size 20px
+					line-height 50px
+				.view-tab
+					width 90%
+					margin 0 auto
+					border 5px solid #fff1e5
+					tr
+						color #4c4c4c
+						font-size 14px
+						th
+							line-height 40px
+							height 40px
+							width 30%
+							padding-left 26px
+							border-right 1px dashed #ccc
+							border-bottom 1px dashed #ccc
+						td
+							width 68%
+							line-height 40px
+							padding-left 26px
+							border-bottom 1px dashed #ccc
+			.lx-title
+				background #91c854
+				height 50px
+				padding-left 26px
+				margin 0 auto
+				color #fff
+				font-size 20px
+				font-weight bold
+				line-height 50px
+				.btns
+					height 50px
+					display inline-block
+					.btn-cb
+						padding 0 12px
+						color #fff
+						font-size 18px
+						font-weight 200
+						display inline-block
 
-		.detail
-			width 100%
-			display block
-			padding 20px 0
-			border-bottom 1px solid #ccc
-			position relative
-			.d-wrap
-				.detail-item
-					position relative
-					overflow hidden
-					.item-f, .item-r
-						position relative
-						line-height 35px
-						height 35px
-						overflow hidden
-						width 49%
-						span
-							line-height 35px
-							position absolute
-							left 50px
-							top 5px
-						.inp
-							position absolute
-							height 24px
-							left 200px
-							top 5px
-							padding 0 7px
-							border 1px solid #ccc
-							input
-								margin-top 4px
-								display block
-								outline none
-					.item-f
-						float left
-					.item-r
-						float right
 
 </style>

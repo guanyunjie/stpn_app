@@ -8,15 +8,28 @@
 				<i class="iconfont icon-logo-fb"></i>
 			</div>
 			<div class="login">
-				<div>登录</div>
+				<div class="l-wrap" @mouseenter="isLoginShow = true" @mouseleave="isLoginShow = false">
+					<img src="/static/img/3265549600663283.jpg" width="32" height="32" alt="">
+					<span>管理员</span>
+					<ul v-show="isLoginShow">
+						<li class="l-item">注销</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div class="red-line"></div>
 	</div>
+
 </template>
 
 <script type="text/ecmascript-6">
-	export default {};
+	export default {
+	  	data() {
+	  	  	return {
+			  	isLoginShow: false
+		  	}
+		}
+	};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -51,6 +64,27 @@
 				margin 0 30px
 				color #fff
 				line-height 68px
+				.l-wrap
+					cursor pointer
+					img
+						border 1px solid #000
+						border-radius 3px
+						margin 17px 5px
+					span
+						float right
+					ul
+						background #333
+						position absolute
+						bottom 0px
+						left -30px
+						z-index 99
+						border 1px solid #000
+						border-radius 3px
+						.l-item
+							width 80px
+							padding 8px 20px
+							line-height 20px
+							color #ccc
 		.red-line
 			position relative
 			height 4px
