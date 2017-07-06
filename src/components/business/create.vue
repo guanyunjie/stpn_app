@@ -97,21 +97,21 @@
 											   v-model="life">
 										<span class="dot"
 											  :class="{'checked' : life === 'l2'}"></span>
-										<label for="radio_1_1" class="r-label">L2VPN</label>
+										<label for="radio_1_1" class="r-label">L2V</label>
 									</div>
 									<div class="radio">
 										<input id="radio_1_2" name="czsm" value="l3" type="radio"
 											   v-model="life">
 										<span class="dot"
 											  :class="{'checked' : life === 'l3'}"></span>
-										<label for="radio_1_2" class="r-label">L3VPN</label>
+										<label for="radio_1_2" class="r-label">L3VPF</label>
 									</div>
 									<div class="radio">
 										<input id="radio_1_3" name="czsm" value="l4" type="radio"
 											   v-model="life">
 										<span class="dot"
 											  :class="{'checked' : life === 'l4'}"></span>
-										<label for="radio_1_3" class="r-label">L4VPN</label>
+										<label for="radio_1_3" class="r-label">L4VP</label>
 									</div>
 								</div>
 							</td>
@@ -244,56 +244,49 @@
 											&:hover
 												cursor pointer
 												background #ccc
-
-
-
-								.checkbox
+								.checkbox, .radio
 									display inline-block
 									position relative
 									cursor pointer
-									line-height 36px
-									margin-right 15px
+									line-height 20px
+									width 20%
+									.r-label, .c-label
+										position relative
+										padding-left 10px
+										line-height 20px
+										display inline-block
+										cursor pointer
+									input[type=radio], input[type=checkbox]
+										position relative
+										z-index 89
+										float left
+										cursor pointer
+										height 18px
+										width 18px
+										opacity 0
 									.dot
 										position absolute
-										top 8px
+										top 0px
 										left 0px
 										display inline-block
 										padding 8px
 										border 1px solid #969696
-										border-radius 3px
 										background #fff
 									.checked::after
-										content '✔'
 										position absolute
 										color #969696
-										top -9px
-										text-shadow 0
+								.checkbox
+									.dot
+										border-radius 3px
+									.checked::after
+										content '✔'
+										top -1px
 										left 1px
 										font-size 16px
 										font-weight bold
-									.c-label
-										position relative
-										padding-left 10px
-										cursor pointer
-									input[type=checkbox]
-										position relative
-										z-index 99
-										opacity 0
 								.radio
-									display inline-block
-									position relative
-									cursor pointer
-									line-height 36px
-									width 17%
 									.dot
-										position absolute
-										top 8px
-										left 0px
-										display inline-block
-										padding 8px
-										border 1px solid #969696
 										border-radius 99px
-										background #fff
 									.checked::after
 										content ' '
 										width 10px
@@ -305,14 +298,7 @@
 										text-shadow 0
 										left 3px
 										font-size 32px
-									.r-label
-										position relative
-										padding-left 10px
-										cursor pointer
-									input[type=radio]
-										position relative
-										z-index 99
-										opacity 0
+
 
 			.step-next
 				display block
