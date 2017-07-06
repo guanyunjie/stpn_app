@@ -4,7 +4,7 @@
 
 <template>
 	<div class="xn">
-		this is xingneng
+		<img src="/static/img/xndemo.jpg" alt="">
 	</div>
 </template>
 

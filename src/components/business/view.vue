@@ -5,7 +5,10 @@
 	<div class="view">
 		<app-title :name="'查看业务路由'"></app-title>
 		<div class="v-business">
-			<h4 class="yw-title">业务列表</h4>
+			<app-paragraph :name="'业务列表'"
+						   :color="{bc: '#fff', fc: '#4c4c4c'}"
+						   :border="true">
+			</app-paragraph>
 			<ul v-if="items.length > 0">
 				<router-link class="item"
 							 v-for="(item, index) in items"
@@ -25,7 +28,10 @@
 		</div>
 		<div class="view-wrap" v-show="selectBusiness.id">
 			<div class="detail">
-				<h4 class="bas-title">基础信息</h4>
+				<app-paragraph :name="'基础信息'"
+							   :color="{bc: 'linear-gradient(#d49665, #9a6943)', fc: '#fff'}"
+							   :border="false">
+				</app-paragraph>
 				<table class="view-tab">
 					<tbody>
 						<tr>
@@ -78,6 +84,7 @@
 
 <script type="text/ecmascript-6">
 	import title from '../common/title.vue';
+	import paragraph from '../common/paragraph.vue';
 
 	export default {
 	  	created() {
@@ -103,7 +110,8 @@
 			}
 		},
 	  	components: {
-	  	  	'app-title': title
+	  	  	'app-title': title,
+			'app-paragraph': paragraph
 		}
 	};
 </script>
@@ -125,14 +133,6 @@
 			margin 30px auto
 			position relative
 			border 1px solid #ccc
-			.yw-title
-				margin 0 auto
-				padding-left 26px
-				color #4c4c4c
-				font-size 20px
-				font-weight bold
-				border-bottom 1px dashed #ccc
-				line-height 50px
 			ul
 				width 90%
 				margin 10px auto
@@ -174,17 +174,9 @@
 				padding 0 0 70px 0
 				border-bottom 1px solid #ccc
 				position relative
-				.bas-title
-					padding-left 26px
-					margin 0 auto
-					background #d49665
-					margin-bottom 20px
-					color #fff
-					font-size 20px
-					line-height 50px
 				.view-tab
 					width 90%
-					margin 0 auto
+					margin 20px auto
 					border 5px solid #fff1e5
 					tr
 						color #4c4c4c

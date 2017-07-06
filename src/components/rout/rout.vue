@@ -4,7 +4,7 @@
 
 <template>
 	<div class="rout">
-		this is rout!
+		<img src="/static/img/topodemo.jpg" alt="">
 	</div>
 </template>
 

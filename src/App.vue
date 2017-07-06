@@ -54,7 +54,7 @@
 		right 0px
 		bottom 0px
 		background #f2f2f2
-		overflow scroll
+		overflow-y scroll
 	.active
 		background #ccc
 		&:hover
