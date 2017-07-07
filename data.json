@@ -77,5 +77,97 @@
             "rout": {},
             "xn": {}
         }
+    ],
+    "topoList": [
+        {
+            "name": "1",
+            "x": 56,
+            "y": 23,
+            "value": 20,
+            "symbolSize": 20,
+            "itemStyle": {
+                "normal": {
+                    "color": "red"
+                }
+            }
+        },
+        {
+            "name": "2",
+            "x": 23,
+            "y": 56,
+            "value": 12,
+            "symbolSize": 10,
+            "itemStyle": {
+                "normal": {
+                    "color": "blue"
+                }
+            }
+        },
+        {
+            "name": "3",
+            "x": 78,
+            "y": 24,
+            "value": 11,
+            "symbolSize": 6,
+            "itemStyle": {
+                "normal": {
+                    "color": "green"
+                }
+            }
+        },
+        {
+            "name": "4",
+            "x": 14,
+            "y": 34,
+            "value": 56,
+            "symbolSize": 34,
+            "itemStyle": {
+                "normal": {
+                    "color": "blue"
+                }
+            }
+        },
+        {
+            "name": "5",
+            "x": 24,
+            "y": 34,
+            "value": 56,
+            "symbolSize": 34,
+            "itemStyle": {
+                "normal": {
+                    "color": "blue"
+                }
+            }
+        },
+        {
+            "name": "6",
+            "x": 64,
+            "y": 34,
+            "value": 56,
+            "symbolSize": 34,
+            "itemStyle": {
+                "normal": {
+                    "color": "blue"
+                }
+            }
+        }
+    ],
+    "links": [
+        {
+            "source": 1,
+            "target": 2
+        },
+        {
+            "source": 2,
+            "target": 3
+        },
+        {
+            "source": 3,
+            "target": 4
+        },
+        {
+            "source": 4,
+            "target": 5
+        }
     ]
 }

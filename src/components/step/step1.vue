@@ -68,7 +68,7 @@
 				<router-link class="step-next" to="/business/create">
 					上一步
 				</router-link>
-				<router-link class="step-next" to="/business/create/step2">
+				<router-link class="step-next" to="/business/create/port">
 					下一步
 				</router-link>
 			</div>

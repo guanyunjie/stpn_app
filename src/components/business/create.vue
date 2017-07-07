@@ -17,7 +17,7 @@
 							<td>
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text">
+										<input type="text" placeholder="请填写...">
 									</div>
 								</div>
 							</td>
@@ -25,7 +25,7 @@
 							<td>
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text">
+										<input type="text" placeholder="请填写...">
 									</div>
 								</div>
 							</td>

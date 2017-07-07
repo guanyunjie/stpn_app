@@ -25,6 +25,8 @@ var app = express()
 // ================================================================================================
 var appDate = require('../data.json');
 var ywList = appDate.ywList;
+var topoList = appDate.topoList;
+var links = appDate.links;
 
 var apiRoutes = express.Router();
 
@@ -34,7 +36,17 @@ apiRoutes.get('/ywList', function (req, res) {
 	});
 });
 
+apiRoutes.get('/topoList', function (req, res) {
+	res.json({
+		result: topoList
+	});
+});
 
+apiRoutes.get('/links', function (req, res) {
+	res.json({
+		result: links
+	});
+});
 
 app.use('/api', apiRoutes);
 // ================================================================================================

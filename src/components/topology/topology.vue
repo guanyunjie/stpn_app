@@ -5,14 +5,13 @@
 	<div class="topology">
 		<app-title :name="'拓扑详情'"></app-title>
 		<div class="s-topology">
-			<div class="t-area">
-				<router-link to="/topology/panel/121312">a1</router-link>
-				<router-link to="/topology/panel/324223">a2</router-link>
-				<router-link to="/topology/panel/543545">a3</router-link>
-				<router-link to="/topology/panel/645453">a4</router-link>
-			</div>
+			<app-rout :nodeChecked="nodeChecked" :linkChecked="linkChecked"></app-rout>
 			<div class="panel">
-				<router-view></router-view>
+				<h2>属性面板</h2>
+				<p>名称：{{selectedNodeInfo.name}}</p>
+				<p>厂商：</p>
+				<p>类型：{{selectedNodeInfo.type}}</p>
+				<p>端口：</p>
 			</div>
 		</div>
 	</div>
@@ -20,10 +19,32 @@
 
 <script type="text/ecmascript-6">
 	import title from '../common/title.vue';
+	import rout from '../rout/rout.vue';
 
 	export default {
+	  	data() {
+	  	  	let _this = this;
+	  	  	return {
+				selectedNodeInfo: {
+				  	name: 'weizhi',
+					type: 'weizhi'
+				},
+				nodeChecked(id) {
+					_this.selectedNodeInfo = {
+						name: 'name' + id,
+						type: 'type' + id
+					}
+				},
+				data: {},
+				linkChecked(id) {
+				  	console.log(id);
+				}
+			}
+		},
+		mounted() {},
 		components: {
-	  	  	'app-title': title
+	  	  	'app-title': title,
+			'app-rout': rout
 		}
 	};
 </script>

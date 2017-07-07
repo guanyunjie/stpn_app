@@ -12,9 +12,7 @@ import panel from './components/panel/panel.vue';
 import rout from './components/rout/rout.vue';
 import xn from './components/xn/xn.vue';
 import step1 from './components/step/step1.vue';
-import step2 from './components/step/step2.vue';
-import step3 from './components/step/step3.vue';
-import step4 from './components/step/step4.vue';
+import port from './components/step/port.vue';
 
 Vue.config.productionTip = false
 
@@ -65,16 +63,8 @@ const router = new VRouter({
 			component: step1
 		},
 		{
-			path: '/business/create/step2',
-			component: step2
-		},
-		{
-			path: '/business/create/step3',
-			component: step3
-		},
-		{
-			path: '/business/create/step4',
-			component: step4
+			path: '/business/create/port',
+			component: port
 		}
 	]
 });
