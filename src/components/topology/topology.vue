@@ -9,9 +9,9 @@
 			<div class="panel">
 				<h2>属性面板</h2>
 				<p>名称：{{selectedNodeInfo.name}}</p>
-				<p>厂商：</p>
+				<p>厂商：{{selectedNodeInfo.company}}</p>
 				<p>类型：{{selectedNodeInfo.type}}</p>
-				<p>端口：</p>
+				<p>端口：{{selectedNodeInfo.port}}</p>
 			</div>
 		</div>
 	</div>
@@ -30,10 +30,9 @@
 					type: 'weizhi'
 				},
 				nodeChecked(id) {
-					_this.selectedNodeInfo = {
-						name: 'name' + id,
-						type: 'type' + id
-					}
+				  	_this.$http.get('/api/node/' + id).then((res) => {
+						_this.selectedNodeInfo = res.body.result;
+					});
 				},
 				data: {},
 				linkChecked(id) {

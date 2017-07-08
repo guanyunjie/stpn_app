@@ -9,12 +9,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import eCharts from 'echarts';
-	// require('echarts/lib/chart/graph');
-
-	/* require('echarts/lib/component/tooltip');
-	require('echarts/lib/component/legend');
-	require('echarts/lib/component/title'); */
+	import eCharts from 'echarts/lib/echarts';
+	require('echarts/lib/chart/graph');
 
 	export default {
 		props: ['nodeChecked', 'linkChecked'],
@@ -28,20 +24,6 @@
 		mounted() {
 			let myCharts = eCharts.init(document.getElementById('main'));
 			let _this = this;
-			let categories = [
-			  	{
-			  	  	name: 'ETH',
-					symbol: 'roundRect'
-				},
-				{
-				  	name: 'ODU',
-					symbol: 'circle'
-				},
-				{
-				  	name: 'OCH',
-					symbol: 'pin'
-				}
-			];
 			myCharts.on('click', (params) => {
 				if (params.componentType === 'series') {
 					_this.nodeName = params.data.name;
@@ -58,43 +40,67 @@
 				}
 			});
 			myCharts.setOption({
-				title: {
-					text: 'Les Miserables',
-					subtext: 'Default layout',
-					top: 'top',
-					left: 'right'
+				title: { text: 'SPTN拓扑图' },
+				legend: {
+					borderColor: '#333',
+					left: 'left',
+					selected: {
+						'ETH': true,
+						'ODU': true,
+						'OCH': true
+					},
+					data: ['ETH', 'ODU', 'OCH']
 				},
-				tooltip: {},
-				legend: [{
-					// selectedMode: 'single',
-					data: categories.map((a) => {
-					  	return a.name;
-					})
-				}],
-				animation: false,
-				series: [
-					{
-					  	type: 'graph',
-						name: 'OTN',
-						layout: 'force',
-						nodes: [],
-						links: [],
-						roam: true,
-						label: {
-							normal: {
-								position: 'right'
-							}
+				backgroundColor: '#f2f2f2',
+				series: [{
+					name: 'Les Miserables',
+					type: 'graph',
+					layout: 'force',
+					data: [],
+					links: [],
+					label: {
+						normal: {
+							position: 'right'
+						}
+					},
+					force: {
+						repulsion: 50,
+						gravity: 0.9,
+						edgeLength: [10, 50],
+						layoutAnimation: true
+					},
+					cursor: 'pointer',
+					lineStyle: {
+						normal: {
+							color: 'red',
+							width: 1,
+							type: 'dashed',
+							curveness: 0.5
 						},
-						force: {
-							repulsion: 100
+						emphasis: {
+							color: 'blue',
+							width: 2,
+							shadowBlur: 5,
+							shadowColor: 'blue'
+						}
+					},
+					categories: [
+						{
+							name: 'ETH',
+							symbol: 'arrow'
 						},
-						categories: categories
-					}
-				]
+						{
+							name: 'ODU',
+							symbol: 'roundRect'
+						},
+						{
+							name: 'OCH',
+							symbol: 'arrow'
+						}
+					]
+				}]
 			});
-			myCharts.showLoading();
 			this.$http.get('/api/nodes').then((res) => {
-				myCharts.hideLoading();
 				let result = res.body.result;
 				this.data.nodes = [];
 				for (let i = 0; i < result.length; i++) {
@@ -106,7 +112,6 @@
 						y: Math.floor(Math.random() * 100),
 						symbolSize: 30,
 						category: i % 3,
-						draggable: true,
 						tooltip: {
 							position: 'right',
 							backgroundColor: '#ccc',
