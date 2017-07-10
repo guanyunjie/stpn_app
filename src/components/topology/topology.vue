@@ -8,10 +8,12 @@
 			<app-rout :nodeChecked="nodeChecked" :linkChecked="linkChecked"></app-rout>
 			<div class="panel">
 				<h2>属性面板</h2>
-				<p>名称：{{selectedNodeInfo.name}}</p>
-				<p>厂商：{{selectedNodeInfo.company}}</p>
-				<p>类型：{{selectedNodeInfo.type}}</p>
-				<p>端口：{{selectedNodeInfo.port}}</p>
+				<p v-show="selectedNodeInfo.name || selectedNodeInfo.value">名称：{{selectedNodeInfo.name || selectedNodeInfo.value}}</p>
+				<p v-show="selectedNodeInfo.company">厂商：{{selectedNodeInfo.company}}</p>
+				<p v-show="selectedNodeInfo.type">类型：{{selectedNodeInfo.type}}</p>
+				<p v-show="selectedNodeInfo.port">端口：{{selectedNodeInfo.port}}</p>
+				<p v-show="selectedNodeInfo.source">源节点：{{selectedNodeInfo.source}}</p>
+				<p v-show="selectedNodeInfo.target">宿节点：{{selectedNodeInfo.target}}</p>
 			</div>
 		</div>
 	</div>
@@ -25,10 +27,7 @@
 	  	data() {
 	  	  	let _this = this;
 	  	  	return {
-				selectedNodeInfo: {
-				  	name: 'weizhi',
-					type: 'weizhi'
-				},
+				selectedNodeInfo: {},
 				nodeChecked(id) {
 				  	_this.$http.get('/api/node/' + id).then((res) => {
 						_this.selectedNodeInfo = res.body.result;
@@ -36,7 +35,9 @@
 				},
 				data: {},
 				linkChecked(id) {
-				  	console.log(id);
+					_this.$http.get('/api/link/' + id).then((res) => {
+						_this.selectedNodeInfo = res.body.result;
+					});
 				}
 			}
 		},

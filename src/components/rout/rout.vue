@@ -16,60 +16,70 @@
 	require('echarts/lib/component/legend');
 	require('echarts/lib/component/title'); */
 
+	// 元素节点背景列表
+	const nodeBackgrounds = ['image://static/img/3265549600663283.jpg', 'image://static/img/beijing.jpg', 'image://static/img/timg.jpg'];
+	const nodeSelectStyle = {borderColor: '#000', borderWidth: 2};
+	const nodeNormalStyle = {};
+	const linkSelectStyle = {color: 'rgb(91, 153, 210)', width: 4};
+	const linkNormalStyle = {color: 'rgb(91, 153, 210)', width: 2};
+
 	export default {
 		props: ['nodeChecked', 'linkChecked'],
 		data() {
 			return {
 				nodeName: '',
-				data: []
+				nodes: [],
+				links: []
 			}
 		},
 		created() {},
 		mounted() {
-			let myCharts = eCharts.init(document.getElementById('main'));
-			let _this = this;
-			let categories = [
-			  	{
-			  	  	name: 'ETH',
-					symbol: 'roundRect'
-				},
-				{
-				  	name: 'ODU',
-					symbol: 'circle'
-				},
-				{
-				  	name: 'OCH',
-					symbol: 'pin'
-				}
-			];
-			myCharts.on('click', (params) => {
+			let eChartsInstance = eCharts.init(document.getElementById('main'));
+			// EVENTS配置
+			eChartsInstance.on('click', (params) => {
 				if (params.componentType === 'series') {
-					_this.nodeName = params.data.name;
+					this.nodeName = params.data.name;
 					if (params.dataType === 'node') {
-						if (typeof _this['nodeChecked'] === 'function') {
-							_this['nodeChecked'](params.data.name);
+						if (typeof this['nodeChecked'] === 'function') {
+						  	this.nodeSelected(params, eChartsInstance);
+							this['nodeChecked'](params.data.name);
 						}
 					}
 					if (params.dataType === 'edge') {
-						if (typeof _this['linkChecked'] === 'function') {
-							_this['linkChecked'](params.data.name);
+						if (typeof this['linkChecked'] === 'function') {
+						  	this.linkSelected(params, eChartsInstance);
+							this['linkChecked'](params.data.value);
 						}
 					}
 				}
 			});
-			myCharts.setOption({
+			// 数据视图配置
+			eChartsInstance.setOption({
 				title: {
-					text: 'Les Miserables',
-					subtext: 'Default layout',
+					text: 'SPTN拓扑图',
 					top: 'top',
-					left: 'right'
+					left: 'left',
+					padding: [10, 30]
 				},
 				tooltip: {},
 				legend: [{
 					// selectedMode: 'single',
-					data: categories.map((a) => {
-					  	return a.name;
-					})
+					data: [
+						{
+						  	name: 'ETH',
+							icon: nodeBackgrounds[0]
+						},
+						{
+						  	name: 'ODU',
+							icon: nodeBackgrounds[1]
+						},
+						{
+						  	name: 'OCH',
+							icon: nodeBackgrounds[2]
+						}],
+					top: 'top',
+					left: 'right',
+					padding: [10, 30]
 				}],
 				animation: false,
 				series: [
@@ -77,7 +87,16 @@
 					  	type: 'graph',
 						name: 'OTN',
 						layout: 'force',
-						nodes: [],
+						nodes: [
+							{
+							  	itemStyle: {
+							  	  	normal: {
+							  	  	  	borderColor: '#000',
+										borderWidth: 2
+									}
+								}
+							}
+						],
 						links: [],
 						roam: true,
 						label: {
@@ -88,15 +107,27 @@
 						force: {
 							repulsion: 100
 						},
-						categories: categories
+						categories: [
+							{
+								category: 0,
+								name: 'ETH'
+							},
+							{
+								name: 'ODU',
+								symbol: 'circle'
+							},
+							{
+								name: 'OCH',
+								symbol: 'diamond'
+							}
+						]
 					}
 				]
 			});
-			myCharts.showLoading();
+			eChartsInstance.showLoading();
 			this.$http.get('/api/nodes').then((res) => {
-				myCharts.hideLoading();
+				eChartsInstance.hideLoading();
 				let result = res.body.result;
-				this.data.nodes = [];
 				for (let i = 0; i < result.length; i++) {
 					let item = result[i];
 					let obj = {
@@ -104,27 +135,44 @@
 						value: item.name,
 						x: Math.floor(Math.random() * 100),
 						y: Math.floor(Math.random() * 100),
-						symbolSize: 30,
+						symbolSize: 40,
+						symbol: 'roundRect',
 						category: i % 3,
-						draggable: true,
 						tooltip: {
 							position: 'right',
 							backgroundColor: '#ccc',
 							borderColor: '#333'
-						}
+						},
+						itemStyle: {}
 					}
-					this.data.nodes.push(obj);
+					this.nodes.push(obj);
 				}
-				myCharts.setOption({
+				eChartsInstance.setOption({
 					series: [{
-						data: this.data.nodes
+						data: this.nodes
 					}]
 				});
 			});
 			this.$http.get('/api/links').then((res) => {
-				myCharts.setOption({
+			  	let result = res.body.result;
+			  	for (let i = 0; i < result.length; i++) {
+			  	  	let item = result[i];
+			  	  	let link = {
+			  	  	  	source: item.source,
+						target: item.target,
+						value: item.value,
+						lineStyle: {
+			  	  	  	  	normal: {
+			  	  	  	  	  	color: 'rgb(91, 153, 210)',
+								width: 2
+							}
+						}
+					}
+					this.links.push(link);
+				}
+				eChartsInstance.setOption({
 					series: [{
-						links: res.body.result
+						links: this.links
 					}]
 				});
 			});
@@ -132,6 +180,26 @@
 		methods: {
 			getRandomColor() {
 				return '#' + ('00000' + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
+			},
+			nodeSelected(params, eChartsInstance) {
+				this.nodes.forEach((node) => {
+				  	node.itemStyle.normal = node.name === params.data.name ? nodeSelectStyle : nodeNormalStyle;
+				});
+				eChartsInstance.setOption({
+					series: [{
+						data: this.nodes
+					}]
+				});
+			},
+			linkSelected(params, eChartsInstance) {
+				this.links.forEach((link) => {
+					link.lineStyle.normal = link.value === params.data.value ? linkSelectStyle : linkNormalStyle;
+				});
+				eChartsInstance.setOption({
+					series: [{
+						links: this.links
+					}]
+				});
 			}
 		}
 	};

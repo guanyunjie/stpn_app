@@ -6,62 +6,40 @@
 		<app-title :name="'配置业务基本属性：选择端点'"></app-title>
 		<div class="step1-wrap">
 			<div class="s-rout">
-				<app-rout></app-rout>
+				<app-rout :nodeChecked="nodeChecked"></app-rout>
 			</div>
 			<div class="panel">
 				<h4 class="title">已选节点</h4>
 				<div class="own-node-wrap">
 					<div class="own-node">
-					<span class="node-item">
-						节点1
-						<em>&times;</em>
-					</span>
-						<span class="node-item">节点434534<em>&times;</em></span>
-						<span class="node-item">节点1<em>&times;</em></span>
-						<span class="node-item">节ffsefsffefsf<em>&times;</em></span>
-						<span class="node-item">节<em>&times;</em></span>
-						<span class="node-item">节点1<em>&times;</em></span>
-						<span class="node-item">节点1<em>&times;</em></span>
+						<span v-for="node in selectedNodes" class="node-item">
+							{{node}}
+							<em @click="removeNode(node)">&times;</em>
+						</span>
 					</div>
 				</div>
 				<h4 class="title">配置tunnel</h4>
 				<div class="set-tunnel">
 					<table class="tab">
 						<thead>
-						<tr>
-							<th>名称</th>
-							<th>源节点</th>
-							<th>宿节点</th>
-							<th>保护方式</th>
-							<th>包含排斥</th>
-							<th>操作</th>
-						</tr>
+							<tr>
+								<th>名称</th>
+								<th>源节点</th>
+								<th>宿节点</th>
+								<th>保护方式</th>
+								<th>包含排斥</th>
+								<th>操作</th>
+							</tr>
 						</thead>
 						<tbody>
-						<tr>
-							<td>tunnel1</td>
-							<td>节点a</td>
-							<td>节点b</td>
-							<td>1+1保护</td>
-							<td>排斥</td>
-							<td>&times;</td>
-						</tr>
-						<tr>
-							<td>tunnel1</td>
-							<td>节点a</td>
-							<td>节点b</td>
-							<td>1+1保护</td>
-							<td>排斥</td>
-							<td>&times;</td>
-						</tr>
-						<tr>
-							<td>tunnel1</td>
-							<td>节点a</td>
-							<td>节点b</td>
-							<td>1+1保护</td>
-							<td>排斥</td>
-							<td>&times;</td>
-						</tr>
+							<tr v-for="tunnel in tunnelInfo">
+								<td>{{tunnel.name}}</td>
+								<td>{{tunnel.source}}</td>
+								<td>{{tunnel.target}}</td>
+								<td>{{tunnel.protoType}}</td>
+								<td>{{tunnel.isBH}}</td>
+								<td>&times;</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -82,10 +60,46 @@
 	import rout from '../rout/rout.vue';
 
 	export default {
+	  	data() {
+	  	  	return {
+	  	  	  	selectedNodes: [],
+				tunnelInfo: []
+			}
+		},
 	  	components: {
 	  	  	'app-title': title,
 			'app-rout': rout,
 			'app-paragraph': paragraph
+		},
+		methods: {
+			nodeChecked(id) {
+				if (!this.selectedNodes.includes(id)) {
+					this.selectedNodes.push(id);
+				}
+			},
+			linkChecked(id) {},
+			removeNode(node) {
+			  	this.selectedNodes.forEach((item, index) => {
+			  	  	if (item === node) {
+						this.selectedNodes.splice(index, 1);
+					}
+				})
+			}
+		},
+		watch: {
+			selectedNodes(now) {
+			  	this.tunnelInfo = [];
+				now.forEach((item) => {
+				  	let tunnel = {
+				  	  	name: item,
+						source: 'source' + item,
+						target: 'target' + item,
+						protoType: '1+1保护',
+						isBH: '排斥'
+					}
+					this.tunnelInfo.push(tunnel);
+				});
+			}
 		}
 	};
 </script>

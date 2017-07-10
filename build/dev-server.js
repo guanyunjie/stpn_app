@@ -68,6 +68,19 @@ apiRoutes.get('/node/:id', function (req, res) {
 	});
 });
 
+apiRoutes.get('/link/:id', function (req, res) {
+	var id = req.params.id;
+	var link = {};
+	for (var i = 0; i < links.length; i++) {
+		if (links[i].value === id) {
+			link = links[i];
+		}
+	}
+	res.json({
+		result: link
+	});
+});
+
 app.use('/api', apiRoutes);
 // ================================================================================================
 

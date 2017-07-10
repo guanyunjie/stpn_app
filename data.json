@@ -152,23 +152,6 @@
             }
         }
     ],
-    "nodes": [{"id":"ba17d6","name":"nodef75180","type":"type65b55f","company":"百度","port":"f1321a"},{"id":"1156d7","name":"node7ff1cc","type":"typee7a146","company":"腾讯","port":"a76fe9"},{"id":"e2a2ed","name":"nodeef6ed4","type":"typef7ed47","company":"阿里","port":"fbba25"},{"id":"231e90","name":"node724bb1","type":"typea0de00","company":"百度","port":"7caff7"},{"id":"e6770b","name":"nodedadb58","type":"type6a7af5","company":"腾讯","port":"bcaa75"},{"id":"904a76","name":"node2163cf","type":"type1cf8e9","company":"阿里","port":"4a6a11"},{"id":"8f4f7c","name":"node9d99f9","type":"typedd27ed","company":"百度","port":"0a2277"},{"id":"62cb87","name":"node8709ce","type":"type10a9b6","company":"腾讯","port":"de0708"},{"id":"96c168","name":"nodeaff0b7","type":"type21e598","company":"阿里","port":"9c16ea"},{"id":"fc8ada","name":"nodefa5aac","type":"type810349","company":"百度","port":"b77811"},{"id":"68a384","name":"node1f2eff","type":"type96bf0f","company":"腾讯","port":"33a149"},{"id":"20dfc5","name":"node8e81c0","type":"type24f936","company":"阿里","port":"91b857"},{"id":"c68f0e","name":"node23b046","type":"typea16f86","company":"百度","port":"e14c44"},{"id":"0a98d4","name":"nodec86e14","type":"type8f0593","company":"腾讯","port":"95c408"},{"id":"457e15","name":"node2f2603","type":"type48c3bd","company":"阿里","port":"3d9fd8"},{"id":"fc0307","name":"node2ff11d","type":"typee7c91e","company":"百度","port":"c5bbb0"},{"id":"cc2bd1","name":"node13b091","type":"type1c5ada","company":"腾讯","port":"76ad8b"},{"id":"0aadf9","name":"node5abc98","type":"typed75b92","company":"阿里","port":"37d1c5"},{"id":"e41f48","name":"node6cb60c","type":"typeb44691","company":"百度","port":"b211e4"},{"id":"22ca0c","name":"nodecd272a","type":"typeb75f13","company":"腾讯","port":"6ddb2d"}],
-    "links": [
-        {
-            "source": 1,
-            "target": 2
-        },
-        {
-            "source": 2,
-            "target": 3
-        },
-        {
-            "source": 3,
-            "target": 4
-        },
-        {
-            "source": 4,
-            "target": 5
-        }
-    ]
+    "nodes": [{"id":"939341","name":"node99de87","type":"typed7c9e6","company":"百度","port":"22b0bc"},{"id":"17d4b7","name":"node85bdab","type":"type587a04","company":"腾讯","port":"abf365"},{"id":"c64caa","name":"node344220","type":"type05a50c","company":"阿里","port":"eb29a7"},{"id":"a2d146","name":"node999135","type":"type3208ac","company":"百度","port":"017d39"},{"id":"1eacd3","name":"node517879","type":"typee1acf6","company":"腾讯","port":"117345"},{"id":"efcae1","name":"node4a3b57","type":"typea663ae","company":"阿里","port":"b36fe5"},{"id":"0f7bf6","name":"noded90f7e","type":"typeb48a1b","company":"百度","port":"df4dd7"},{"id":"f7908e","name":"node75a689","type":"type4a3296","company":"腾讯","port":"0d6d7c"},{"id":"b34b8b","name":"node5d450d","type":"typeeb9687","company":"阿里","port":"7c3101"},{"id":"8a7c29","name":"node2df822","type":"typeacb249","company":"百度","port":"5ab14b"},{"id":"433f1b","name":"node7e531a","type":"typeaeadbe","company":"腾讯","port":"021fa0"},{"id":"ca399a","name":"nodebce74d","type":"type77c73d","company":"阿里","port":"8838f0"},{"id":"548e6e","name":"node44aadf","type":"type9cbf5d","company":"百度","port":"031d5c"},{"id":"d1becc","name":"nodef678bf","type":"typee793fd","company":"腾讯","port":"b1d4cd"},{"id":"78666a","name":"node6ad81c","type":"typecf092d","company":"阿里","port":"05f965"},{"id":"2d7a2c","name":"node2a818a","type":"type7e64d1","company":"百度","port":"5407a4"},{"id":"998c5b","name":"nodeb46cfe","type":"typee99e95","company":"腾讯","port":"2a9a56"},{"id":"f31a0d","name":"node584025","type":"type274597","company":"阿里","port":"644523"},{"id":"a85814","name":"node494612","type":"typea7bb9b","company":"百度","port":"a5c924"},{"id":"f92def","name":"nodeff979e","type":"type4fb153","company":"腾讯","port":"dae700"}],
+    "links": [{"source":"17d4b7","target":"939341","value":"0b2d5d"},{"source":"c64caa","target":"17d4b7","value":"4dc9b5"},{"source":"a2d146","target":"c64caa","value":"b4b11e"},{"source":"1eacd3","target":"a2d146","value":"03651f"},{"source":"efcae1","target":"1eacd3","value":"4891b4"},{"source":"0f7bf6","target":"efcae1","value":"243b56"},{"source":"f7908e","target":"0f7bf6","value":"3cf3c8"},{"source":"b34b8b","target":"f7908e","value":"fa69b1"},{"source":"8a7c29","target":"b34b8b","value":"4f8cb7"},{"source":"433f1b","target":"8a7c29","value":"d461b6"},{"source":"ca399a","target":"433f1b","value":"422ef4"},{"source":"548e6e","target":"ca399a","value":"2950db"},{"source":"d1becc","target":"548e6e","value":"d798e3"},{"source":"78666a","target":"d1becc","value":"4da077"},{"source":"2d7a2c","target":"78666a","value":"509dd9"},{"source":"998c5b","target":"2d7a2c","value":"bf69a1"},{"source":"f31a0d","target":"998c5b","value":"16b1b3"},{"source":"a85814","target":"f31a0d","value":"6f1629"},{"source":"f92def","target":"a85814","value":"0e02b3"}]
 }
