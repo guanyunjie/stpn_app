@@ -9,13 +9,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import eCharts from 'echarts';
-	// require('echarts/lib/chart/graph');
 
 	/* require('echarts/lib/component/tooltip');
-	require('echarts/lib/component/legend');
-	require('echarts/lib/component/title'); */
+	 require('echarts/lib/component/legend');
+	 require('echarts/lib/component/title'); */
+	// require('echarts/lib/chart/graph');
 
+	import eCharts from 'echarts';
 	// 元素节点背景列表
 	const nodeBackgrounds = ['image://static/img/3265549600663283.jpg', 'image://static/img/beijing.jpg', 'image://static/img/timg.jpg'];
 	const nodeSelectStyle = {borderColor: '#000', borderWidth: 2};
