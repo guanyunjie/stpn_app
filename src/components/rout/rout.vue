@@ -29,24 +29,35 @@
 			return {
 				nodeName: '',
 				nodes: [],
-				links: []
+				links: [],
+				//	区分点击和拖拽事件
+				isDrag: false
 			}
 		},
 		created() {},
 		mounted() {
 			let eChartsInstance = eCharts.init(document.getElementById('main'));
 			// EVENTS配置
-			eChartsInstance.on('click', (params) => {
-				if (params.componentType === 'series') {
+			eChartsInstance.on('mousedown', () => {
+			  	this.isDrag = false;
+			});
+			eChartsInstance.on('mousemove', () => {
+			  	this.isDrag = true;
+			});
+			eChartsInstance.on('mouseup', (params) => {
+				if (!this.isDrag && params.componentType === 'series') {
 					this.nodeName = params.data.name;
+					//	点击节点时
 					if (params.dataType === 'node') {
 						if (typeof this['nodeChecked'] === 'function') {
+						  	//	节点选中状态
 						  	this.nodeSelected(params, eChartsInstance);
 							this['nodeChecked'](params.data.name);
 						}
-					}
-					if (params.dataType === 'edge') {
+						// 点击链路时
+					} else if (params.dataType === 'edge') {
 						if (typeof this['linkChecked'] === 'function') {
+						  	// 链路选中状态
 						  	this.linkSelected(params, eChartsInstance);
 							this['linkChecked'](params.data.value);
 						}
@@ -99,6 +110,7 @@
 						],
 						links: [],
 						roam: true,
+						draggable: true,
 						label: {
 							normal: {
 								position: 'right'
@@ -122,7 +134,8 @@
 							}
 						]
 					}
-				]
+				],
+				animationDurationUpdate: 0
 			});
 			eChartsInstance.showLoading();
 			this.$http.get('/api/nodes').then((res) => {
@@ -182,12 +195,16 @@
 				return '#' + ('00000' + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
 			},
 			nodeSelected(params, eChartsInstance) {
+				this.links.forEach((link) => {
+					link.lineStyle.normal = linkNormalStyle;
+				});
 				this.nodes.forEach((node) => {
 				  	node.itemStyle.normal = node.name === params.data.name ? nodeSelectStyle : nodeNormalStyle;
 				});
 				eChartsInstance.setOption({
 					series: [{
-						data: this.nodes
+						data: this.nodes,
+						links: this.links
 					}]
 				});
 			},
@@ -195,8 +212,12 @@
 				this.links.forEach((link) => {
 					link.lineStyle.normal = link.value === params.data.value ? linkSelectStyle : linkNormalStyle;
 				});
+				this.nodes.forEach((node) => {
+					node.itemStyle.normal = nodeNormalStyle;
+				});
 				eChartsInstance.setOption({
 					series: [{
+					  	data: this.nodes,
 						links: this.links
 					}]
 				});
