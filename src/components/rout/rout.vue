@@ -4,7 +4,7 @@
 
 <template>
 	<div class="rout">
-		<div id="main" style="width: 800px;height:800px;background: #eaeaea"></div>
+		<div id="main" style="background: #eaeaea"></div>
 	</div>
 </template>
 
@@ -17,14 +17,12 @@
 
 	import eCharts from 'echarts';
 	// 元素节点背景列表
-	const nodeBackgrounds = ['image://static/img/3265549600663283.jpg', 'image://static/img/beijing.jpg', 'image://static/img/timg.jpg'];
-	const nodeSelectStyle = {borderColor: '#000', borderWidth: 2};
-	const nodeNormalStyle = {};
-	const linkSelectStyle = {color: 'rgb(91, 153, 210)', width: 4};
+	const nodeBackgrounds = ['eth', 'odu', 'och', 'oms'];
+	const linkSelectStyle = {color: '#009fdb', width: 3};
 	const linkNormalStyle = {color: 'rgb(91, 153, 210)', width: 2};
 
 	export default {
-		props: ['nodeChecked', 'linkChecked'],
+		props: ['nodeChecked', 'linkChecked', 'size', 'nodeSelectType', 'selectedNodes'],
 		data() {
 			return {
 				nodeName: '',
@@ -36,7 +34,7 @@
 		},
 		created() {},
 		mounted() {
-			let eChartsInstance = eCharts.init(document.getElementById('main'));
+			let eChartsInstance = eCharts.init(document.getElementById('main'), {}, {width: this.size.width || 800, height: this.size.height || 800});
 			// EVENTS配置
 			eChartsInstance.on('mousedown', () => {
 			  	this.isDrag = false;
@@ -50,8 +48,7 @@
 					//	点击节点时
 					if (params.dataType === 'node') {
 						if (typeof this['nodeChecked'] === 'function') {
-						  	//	节点选中状态
-						  	this.nodeSelected(params, eChartsInstance);
+						  	// 父组件传入的事件
 							this['nodeChecked'](params.data.name);
 						}
 						// 点击链路时
@@ -72,25 +69,31 @@
 					left: 'left',
 					padding: [10, 30]
 				},
-				tooltip: {},
+				backgroundColor: '#eee',
 				legend: [{
 					// selectedMode: 'single',
 					data: [
 						{
 						  	name: 'ETH',
-							icon: nodeBackgrounds[0]
+							icon: this.getSvgPath(nodeBackgrounds[0])
 						},
 						{
 						  	name: 'ODU',
-							icon: nodeBackgrounds[1]
+							icon: this.getSvgPath(nodeBackgrounds[1])
 						},
 						{
 						  	name: 'OCH',
-							icon: nodeBackgrounds[2]
+							icon: this.getSvgPath(nodeBackgrounds[2])
+						},
+						{
+							name: 'OMS',
+							icon: this.getSvgPath(nodeBackgrounds[3])
 						}],
 					top: 'top',
 					left: 'right',
-					padding: [10, 30]
+					padding: [10, 30],
+					itemWidth: 24,
+					itemHeight: 24
 				}],
 				animation: false,
 				series: [
@@ -121,21 +124,32 @@
 						},
 						categories: [
 							{
-								category: 0,
-								name: 'ETH'
+								name: 'ETH',
+								symbol: this.getSvgPath(nodeBackgrounds[0])
 							},
 							{
 								name: 'ODU',
-								symbol: 'circle'
+								symbol: this.getSvgPath(nodeBackgrounds[1])
 							},
 							{
 								name: 'OCH',
-								symbol: 'diamond'
+								symbol: this.getSvgPath(nodeBackgrounds[2])
+							},
+							{
+								name: 'OMS',
+								symbol: this.getSvgPath(nodeBackgrounds[3])
 							}
 						]
 					}
 				],
-				animationDurationUpdate: 0
+				animationDelayUpdate: 0,
+				animationEasingUpdate: 'elasticOut',
+				animationDurationUpdate: (idx) => {
+				  	return idx * 5;
+				},
+				animation: false,
+				progressive: 0,
+				progressiveThreshold: 0
 			});
 			eChartsInstance.showLoading();
 			this.$http.get('/api/nodes').then((res) => {
@@ -148,14 +162,9 @@
 						value: item.name,
 						x: Math.floor(Math.random() * 100),
 						y: Math.floor(Math.random() * 100),
-						symbolSize: 40,
-						symbol: 'roundRect',
-						category: i % 3,
-						tooltip: {
-							position: 'right',
-							backgroundColor: '#ccc',
-							borderColor: '#333'
-						},
+						symbolSize: 50,
+						symbol: this.getSvgPath(nodeBackgrounds[i % 4]),
+						category: i % 4,
 						itemStyle: {}
 					}
 					this.nodes.push(obj);
@@ -191,33 +200,39 @@
 			});
 		},
 		methods: {
+		  	svgPath() {
+		  	  	return 'image://static/svg/';
+			},
+		  	getSvgPath(layer = 'eth', condition = 'normal') {
+		  	  	return this.svgPath() + condition.toLowerCase() + '/' + layer.toLowerCase() + '.svg';
+			},
 			getRandomColor() {
 				return '#' + ('00000' + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
-			},
-			nodeSelected(params, eChartsInstance) {
-				this.links.forEach((link) => {
-					link.lineStyle.normal = linkNormalStyle;
-				});
-				this.nodes.forEach((node) => {
-				  	node.itemStyle.normal = node.name === params.data.name ? nodeSelectStyle : nodeNormalStyle;
-				});
-				eChartsInstance.setOption({
-					series: [{
-						data: this.nodes,
-						links: this.links
-					}]
-				});
 			},
 			linkSelected(params, eChartsInstance) {
 				this.links.forEach((link) => {
 					link.lineStyle.normal = link.value === params.data.value ? linkSelectStyle : linkNormalStyle;
 				});
 				this.nodes.forEach((node) => {
-					node.itemStyle.normal = nodeNormalStyle;
+					node.symbol = this.getSvgPath(nodeBackgrounds[node.category]);
 				});
 				eChartsInstance.setOption({
 					series: [{
 					  	data: this.nodes,
+						links: this.links
+					}]
+				});
+			}
+		},
+		watch: {
+			selectedNodes(now) {
+			  	console.log(now)
+				this.nodes.forEach((node) => {
+					node.symbol = this.getSvgPath(nodeBackgrounds[node.category], now.includes(node.name) ? 'selected' : 'normal');
+				});
+			  	eCharts.getInstanceByDom(document.getElementById('main')).setOption({
+					series: [{
+						data: this.nodes,
 						links: this.links
 					}]
 				});

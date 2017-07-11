@@ -6,7 +6,12 @@
 		<app-title :name="'配置业务基本属性：选择端点'"></app-title>
 		<div class="step1-wrap">
 			<div class="s-rout">
-				<app-rout :nodeChecked="nodeChecked"></app-rout>
+				<app-rout :nodeChecked="nodeChecked"
+						  :size="{width: 800, height: 800}"
+						  :nodeSelectType="'multiple'"
+						  :selectedNodes="selectedNodes">
+
+				</app-rout>
 			</div>
 			<div class="panel">
 				<h4 class="title">已选节点</h4>
@@ -114,7 +119,6 @@
 			display flex
 			flex-wrap nowrap
 		.s-rout
-			flex 0 0 60%
 			top 0px
 			bottom 0px
 			position inherit

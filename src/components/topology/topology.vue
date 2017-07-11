@@ -5,15 +5,40 @@
 	<div class="topology">
 		<app-title :name="'拓扑详情'"></app-title>
 		<div class="s-topology">
-			<app-rout :nodeChecked="nodeChecked" :linkChecked="linkChecked"></app-rout>
-			<div class="panel">
-				<h2>属性面板</h2>
-				<p v-show="selectedNodeInfo.name || selectedNodeInfo.value">名称：{{selectedNodeInfo.name || selectedNodeInfo.value}}</p>
-				<p v-show="selectedNodeInfo.company">厂商：{{selectedNodeInfo.company}}</p>
-				<p v-show="selectedNodeInfo.type">类型：{{selectedNodeInfo.type}}</p>
-				<p v-show="selectedNodeInfo.port">端口：{{selectedNodeInfo.port}}</p>
-				<p v-show="selectedNodeInfo.source">源节点：{{selectedNodeInfo.source}}</p>
-				<p v-show="selectedNodeInfo.target">宿节点：{{selectedNodeInfo.target}}</p>
+			<app-rout :nodeChecked="nodeChecked"
+					  :linkChecked="linkChecked"
+					  :size="{width: 1100, height: 800}"
+					  :selectedNodes="[selectedNode.id]"></app-rout>
+			<div class="panel" v-show="selectedNode.name || selectedNode.value">
+				<h2><img :src="selectedNode.name ? './static/svg/normal/eth.svg' : './static/svg/normal/odu.svg'" alt="">属性面板</h2>
+				<table class="tab">
+					<tbody>
+						<tr v-show="selectedNode.name || selectedNode.value">
+							<th>名称：</th>
+							<td>{{selectedNode.name || selectedNode.value}}</td>
+						</tr>
+						<tr v-show="selectedNode.company">
+							<th>厂商：</th>
+							<td>{{selectedNode.company}}</td>
+						</tr>
+						<tr v-show="selectedNode.type">
+							<th>类型：</th>
+							<td>{{selectedNode.type}}</td>
+						</tr>
+						<tr v-show="selectedNode.port">
+							<th>端口：</th>
+							<td>{{selectedNode.port}}</td>
+						</tr>
+						<tr v-show="selectedNode.source">
+							<th>源节点：</th>
+							<td>{{selectedNode.source}}</td>
+						</tr>
+						<tr v-show="selectedNode.target">
+							<th>宿节点：</th>
+							<td>{{selectedNode.target}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -27,16 +52,16 @@
 	  	data() {
 	  	  	let _this = this;
 	  	  	return {
-				selectedNodeInfo: {},
+				selectedNode: {},
 				nodeChecked(id) {
 				  	_this.$http.get('/api/node/' + id).then((res) => {
-						_this.selectedNodeInfo = res.body.result;
+						_this.selectedNode = res.body.result;
 					});
 				},
 				data: {},
 				linkChecked(id) {
 					_this.$http.get('/api/link/' + id).then((res) => {
-						_this.selectedNodeInfo = res.body.result;
+						_this.selectedNode = res.body.result;
 					});
 				}
 			}
@@ -53,17 +78,39 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.topology
 		.s-topology
-			width 90%
+			width 88%
+			margin 20px auto
 			background #fff
+			position relative
 			height 100%
-			margin 0 auto
-			display flex
 			flex-wrap wrap
+			border 1px solid #000
+			overflow hidden
 			.t-area
-				flex 5 1 auto
 				height 100%
 			.panel
-				flex 2 1 auto
-				height 100%
-				border-left 1px solid #ccc
+				position absolute
+				right 30px
+				top 60px
+				background #fff
+				opacity 0.86
+				border 1px solid #ccc
+				h2
+					text-align left
+					padding-left 30px
+					line-height 30px
+				.tab
+					width 240px
+					margin 0px 30px 20px 30px
+					border 1px solid #ccc
+					tr
+						color #4c4c4c
+						font-size 16px
+						th
+							line-height 30px
+							text-align right
+						td
+							line-height 30px
+							text-align left
+							padding-left 10px
 </style>

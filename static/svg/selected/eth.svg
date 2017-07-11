@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="36" height="36" version="1.1"
+xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<symbol id="eth" viewBox="0 0 110 110">
+			<path d="M10,35l25-25h40l25,25v40l-25,25h-40l-25-25zM58,26l12,0,0-8,18,13-18,13,0-8-12,0zM58,60l12,0,0-8,18,13-18,13,0-8-12,0zM52,40l-12,0,0-8-18,13,18,13,0-8,12,0zM52,74l-12,0,0-8-18,13,18,13,0-8,12,0z"></path>
+		</symbol>
+	</defs>
+	<rect width="36" height="36" style="fill: #fff;stroke: rgb(91, 153, 210);stroke-width: 4;" />
+	<use href="#eth" width="36" height="36" style="fill-rule: evenodd;fill: rgb(91, 153, 210);"/>
+</svg>
