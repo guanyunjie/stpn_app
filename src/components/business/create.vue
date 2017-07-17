@@ -13,11 +13,11 @@
 				<table class="view-tab">
 					<tbody>
 						<tr>
-							<th>保护类型：</th>
+							<th>业务带宽：</th>
 							<td>
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text" placeholder="请填写...">
+										<input type="text" placeholder="请填写..." v-model.number="result.ywdk">
 									</div>
 								</div>
 							</td>
@@ -25,36 +25,28 @@
 							<td>
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text" placeholder="请填写...">
+										<input type="text" placeholder="请填写..." v-model="result.lycl">
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th>业务带宽：</th>
+							<th>保护类型：</th>
 							<td>
 								<div class="inp-wrap">
 									<div class="inp"
 										 @mouseenter="isSelectOpen1 = true"
 										 @mouseleave="isSelectOpen1 = false">
 										<label class="custom-select">
-											<span>1+1保护</span>
+											<span>{{bhlxHtml}}</span>
 											<i class="iconfont"
 											   :class="isSelectOpen1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
 										<ul class="custom-ul" v-show="isSelectOpen1">
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
+											<li class="custom-item" value="0" @click="selectBHLX">1+1保护</li>
+											<li class="custom-item" value="1" @click="selectBHLX">1+2保护</li>
+											<li class="custom-item" value="2" @click="selectBHLX">2+1保护</li>
+											<li class="custom-item" value="3" @click="selectBHLX">2+2保护</li>
 										</ul>
 									</div>
 								</div>
@@ -66,89 +58,96 @@
 										 @mouseenter="isSelectOpen2 = true"
 										 @mouseleave="isSelectOpen2 = false">
 										<label class="custom-select">
-											<span>1+1保护</span>
+											<span>{{vpnHTML}}</span>
 											<i class="iconfont"
 											   :class="isSelectOpen2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
 										<ul class="custom-ul" v-show="isSelectOpen2">
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
-											<li class="custom-item">2+2保护</li>
+											<li class="custom-item" value="0" @click="selectVPN">GHTND</li>
+											<li class="custom-item" value="1" @click="selectVPN">OKMJU</li>
+											<li class="custom-item" value="2" @click="selectVPN">QSDRFG</li>
+											<li class="custom-item" value="3" @click="selectVPN">UHJYRE</li>
+											<li class="custom-item" value="4" @click="selectVPN">ETHFGCT</li>
 										</ul>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th>成长生命：</th>
+							<th>路由类型：</th>
 							<td colspan="3">
 								<div class="inp-wrap">
 									<div class="radio">
-										<input id="radio_1_1" name="czsm" value="l2" type="radio"
-											   v-model="life">
+										<input id="radio_1_1" name="czsm" value="0" type="radio"
+											   v-model="result.lylx">
 										<span class="dot"
-											  :class="{'checked' : life === 'l2'}"></span>
+											  :class="{'checked' : result.lylx === '0'}"></span>
 										<label for="radio_1_1" class="r-label">L2V</label>
 									</div>
 									<div class="radio">
-										<input id="radio_1_2" name="czsm" value="l3" type="radio"
-											   v-model="life">
+										<input id="radio_1_2" name="czsm" value="1" type="radio"
+											   v-model="result.lylx">
 										<span class="dot"
-											  :class="{'checked' : life === 'l3'}"></span>
+											  :class="{'checked' : result.lylx === '1'}"></span>
 										<label for="radio_1_2" class="r-label">L3VPF</label>
 									</div>
 									<div class="radio">
-										<input id="radio_1_3" name="czsm" value="l4" type="radio"
-											   v-model="life">
+										<input id="radio_1_3" name="czsm" value="2" type="radio"
+											   v-model="result.lylx">
 										<span class="dot"
-											  :class="{'checked' : life === 'l4'}"></span>
+											  :class="{'checked' : result.lylx === '2'}"></span>
 										<label for="radio_1_3" class="r-label">L4VP</label>
 									</div>
 								</div>
 							</td>
 						</tr>
-					<tr>
-						<th>
-							装备：
-						</th>
-						<td colspan="3">
-							<div class="inp-wrap">
-								<div class="checkbox">
-									<input id="checkbox_1_1" type="checkbox" value="0" v-model="zbs">
-									<span class="dot" :class="{'checked': zbs.includes('0')}"></span>
-									<label for="checkbox_1_1" class="c-label">无尽之刃</label>
+						<tr>
+							<th>
+								端口：
+							</th>
+							<td colspan="3">
+								<div class="inp-wrap">
+									<div class="checkbox">
+										<input id="checkbox_1_1" type="checkbox" value="0" v-model="result.port">
+										<span class="dot" :class="{'checked': result.port.includes('0')}"></span>
+										<label for="checkbox_1_1" class="c-label">无尽之刃</label>
+									</div>
+									<div class="checkbox">
+										<input id="checkbox_1_2" type="checkbox" value="1" v-model="result.port">
+										<span class="dot" :class="{'checked': result.port.includes('1')}"></span>
+										<label for="checkbox_1_2" class="c-label">死亡之舞</label>
+									</div>
+									<div class="checkbox">
+										<input id="checkbox_1_3" type="checkbox" value="2" v-model="result.port">
+										<span class="dot" :class="{'checked': result.port.includes('2')}"></span>
+										<label for="checkbox_1_3" class="c-label">基克的救赎</label>
+									</div>
+									<div class="checkbox">
+										<input id="checkbox_1_4" type="checkbox" value="3" v-model="result.port">
+										<span class="dot" :class="{'checked': result.port.includes('3')}"></span>
+										<label for="checkbox_1_4" class="c-label">弗拉基米尔</label>
+									</div>
 								</div>
-								<div class="checkbox">
-									<input id="checkbox_1_2" type="checkbox" value="1" v-model="zbs">
-									<span class="dot" :class="{'checked': zbs.includes('1')}"></span>
-									<label for="checkbox_1_2" class="c-label">死亡之舞</label>
-								</div>
-								<div class="checkbox">
-									<input id="checkbox_1_3" type="checkbox" value="2" v-model="zbs">
-									<span class="dot" :class="{'checked': zbs.includes('2')}"></span>
-									<label for="checkbox_1_3" class="c-label">基克的救赎</label>
-								</div>
-								<div class="checkbox">
-									<input id="checkbox_1_4" type="checkbox" value="3" v-model="zbs">
-									<span class="dot" :class="{'checked': zbs.includes('3')}"></span>
-									<label for="checkbox_1_4" class="c-label">弗拉基米尔</label>
-								</div>
-							</div>
-						</td>
-					</tr>
+							</td>
+						</tr>
+						<tr>
+							<th>是否包含波长：</th>
+							<td>
+								<a class="switch" href="javascript:;" @click="result.isWaveSwitch = !result.isWaveSwitch">
+									<i :class="result.isWaveSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
+								</a>
+							</td>
+							<th>是否预约：</th>
+							<td>
+								<a class="switch" href="javascript:;" @click="result.isBookSwitch = !result.isBookSwitch">
+									<i :class="result.isBookSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
+								</a>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
-			<router-link class="step-next" to="/business/create/step1">
+			<router-link class="btn-step" to="/business/create/step1">
 				下一步
 			</router-link>
 		</div>
@@ -162,21 +161,61 @@
 	export default {
 	  	data() {
 	  	  	return {
+	  	  	  	result: {},
 	  	  	  	isSelectOpen1: false,
 				isSelectOpen2: false,
-				life: 'l2',
-				zbs: []
+				bhlxHtml: '1+1保护',
+				vpnHTML: 'GHTND'
 			}
+		},
+		created() {
+	  	  	this.result = JSON.parse(sessionStorage.getItem('basicInfo')) || {
+					ywdk: '',
+					lycl: '',
+					bhlx: '0',
+					vpn: '0',
+					lylx: '0',
+					port: [],
+					isWaveSwitch: false,
+					isBookSwitch: false
+				};
 		},
 	  	components: {
 	  	  	'app-title': title,
 			'app-paragraph': paragraph
+		},
+		methods: {
+			selectBHLX(e) {
+			  	this.bhlxHtml = e.target.innerHTML;
+			  	this.result.bhlx = e.target.getAttribute('value');
+				this.isSelectOpen1 = false;
+			},
+			selectVPN(e) {
+			  	this.vpnHTML = e.target.innerHTML;
+			  	this.result.vpn = e.target.getAttribute('value');
+			  	this.isSelectOpen2 = false;
+			}
+		},
+		beforeRouteLeave(to, from, next) {
+	  	  	if (to.path === '/business/create/step1') {
+	  	  	  	console.log(this.result);
+	  	  	  	let {ywdk, lycl, bhlx, vpn, lylx, port, isWaveSwitch, isBookSwitch} = this.result;
+	  	  	  	console.log({ywdk, lycl, bhlx, vpn, lylx, port, isWaveSwitch, isBookSwitch})
+	  	  	  	sessionStorage.setItem('basicInfo', JSON.stringify({ywdk, lycl, bhlx, vpn, lylx, port, isWaveSwitch, isBookSwitch}));
+				next();
+	  	  	} else {
+	  	  	  	sessionStorage.removeItem('basicInfo');
+				next();
+			}
 		}
 	};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+	@import "../../common/stylus/main.styl";
+	@import "../../common/fonts/iconfont.css";
+
 	.s-create
 		.c-wrap
 			margin 30px auto

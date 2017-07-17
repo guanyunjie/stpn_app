@@ -40,14 +40,14 @@
 		left 0px
 		z-index 999
 	.menu
-		width 200px
+		width 225px
 		position fixed
 		left 0px
 		top 74px
 		bottom 0px
 		height 100%
 	.main
-		margin 74px 0 0 200px
+		margin 74px 0 0 225px
 		position absolute
 		top 0px
 		left 0px
@@ -56,7 +56,7 @@
 		background #f2f2f2
 		overflow-y scroll
 	.active
-		background #ccc
+		background #2b2b2b
 		&:hover
-			background #ccc !important
+			background #2b2b2b !important
 </style>

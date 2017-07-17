@@ -236,6 +236,9 @@
 						links: this.links
 					}]
 				});
+			},
+			size(now) {
+				eCharts.getInstanceByDom(document.getElementById('main')).resize({width: now.width});
 			}
 		}
 	};
