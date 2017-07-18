@@ -17,8 +17,8 @@
 	.title
 		font-size 16px
 		text-align left
-		color #333
-		background linear-gradient(#a2a2a2, #8e8c8c)
+		color #eaeaea
+		background linear-gradient(#3e3e3e, #565656)
 		line-height 46px
 		padding-left 26px
 		font-weight bold

@@ -69,8 +69,21 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import eCharts from 'echarts';
+	// common module
+	import eCharts from 'echarts/lib/echarts';
+	// chart and component
+	require('echarts/lib/chart/line');
+	require('echarts/lib/component/legend');
+	require('echarts/lib/component/tooltip');
+	require('echarts/lib/component/title');
+	require('echarts/lib/component/dataZoom');
+	// 格式化时间
 	import moment from 'moment';
+	// jquery
+	let $ = window.jQuery = window.$ = require('jquery/dist/jquery.min');
+	// velocity-animate特效
+	require('velocity-animate/velocity.min');
+	require('velocity-animate/velocity.ui.min')
 
   	export default {
   	  	data() {
@@ -93,6 +106,13 @@
 			}
 		},
 		mounted() {
+  	  	  	//	滚到到顶部
+			$($('.view-wrap')[1]).velocity('scroll', {
+				easing: 'swing',
+				container: $('#mainArea'),
+				duration: 1000
+			});
+			//	配置性能图
 			let eChartsInstance = eCharts.init(document.getElementById('real_time'), {}, {width: 1000, height: 400});
 			eChartsInstance.setOption({
 				title: {
@@ -392,6 +412,12 @@
 			});
   	  	},
 		methods: {
+		},
+		beforeRouteEnter(to, from, next) {
+  	  	  	if (from) {
+
+			}
+			next();
 		}
 	};
 </script>

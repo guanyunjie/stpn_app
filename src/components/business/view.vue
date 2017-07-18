@@ -18,11 +18,11 @@
 							 @click.native="selectYW(item, index)"
 							 :to="{path: '/business/view/'+item.id}">
 					<a>
-						<span>{{item.name}}</span>
+						{{index+1}}、{{item.name}}
 					</a>
 				</router-link>
 			</ul>
-			<button type="button" class="oper-biz" @click="isListShow = !isListShow">
+			<button type="button" class="oper-biz" v-show="items.length > 7" @click="isListShow = !isListShow">
 				<span v-text="isListShow ? '收起' : '打开'"></span>
 			</button>
 		</div>
@@ -112,6 +112,13 @@
 	  	components: {
 	  	  	'app-title': title,
 			'app-paragraph': paragraph
+		},
+		beforeRouteLeave(to, from, next) {
+	  	  	console.log(to.path)
+	  	  	if (to.path === '/business/view/' + this.selectBusiness.id + '/xn') {
+				console.log('sfsfasefsf')
+			}
+			next();
 		}
 	};
 </script>
@@ -123,7 +130,9 @@
 		background #f2f2f2
 		height 100%
 		.list-active
-			background #d8d8d8 !important
+			background #9a9a9a !important
+			a
+				color #fff
 		.rx-active
 			color #333 !important
 			background #fff
@@ -142,13 +151,21 @@
 				justify-content flex-start
 				.item
 					flex 0 0 10%
-					border 1px solid #ccc
-					border-radius 5px
 					line-height 24px
-					background #fff
 					text-align center
+					color #797979
+					border none
+					border-radius 3px
+					background #ececec
 					margin 10px 15px
+					&:hover
+						background #9b9b9b
+						a
+							color #fff
 					a
+						font-size 12px
+						text-overflow ellipsis
+						white-space: nowrap;
 						display block
 			.oper-biz
 				padding 0px 25px
@@ -157,7 +174,7 @@
 				border 1px solid #ccc
 				outline none
 				cursor pointer
-				border-radius 4px
+				border-radius 3px
 				background #fff
 				color #333
 				position absolute

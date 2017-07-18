@@ -214,7 +214,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	@import "../../common/stylus/main.styl";
-	@import "../../common/fonts/iconfont.css";
 
 	.s-create
 		.c-wrap

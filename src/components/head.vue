@@ -34,12 +34,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+	head-height = 48px
+
 	.s-head
 		position fixed
 		left 0px
 		right 0px
 		top 0px
-		height 68px
+		height head-height
 		width 100%
 		border-top 1px solid #000
 		border-bottom 1px solid #000
@@ -48,11 +50,12 @@
 		z-index 999
 		.wrap
 			position relative
+			overflow hidden
 			.logo
-				height 68px
+				height head-height
 				width 150px
 				.iconfont
-					font-size 150px
+					font-size 130px
 					color #fff
 					position absolute
 					top -40px
@@ -63,13 +66,13 @@
 				right 0px
 				margin 0 30px
 				color #fff
-				line-height 68px
+				line-height head-height
 				.l-wrap
 					cursor pointer
 					img
 						border 1px solid #000
 						border-radius 3px
-						margin 17px 5px
+						margin 7px 5px
 					span
 						float right
 					ul
@@ -89,7 +92,7 @@
 			position relative
 			height 4px
 			width 100%
-			box-shadow 0 1px 0 0 #b8b8b8
+			box-shadow 0 1px 0 0 #444
 			border-bottom 1px solid #5a5a5a
 			background linear-gradient(#ea1717, #c70c0c)
 </style>
