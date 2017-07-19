@@ -121,3 +121,41 @@
     box-shadow inset 0 0px 2px 0px #8ec6f7
     border 1px solid #3984ce
     border-bottom 1px solid #0e65bc
+
+.btn-active
+    position relative
+
+.custom-tab
+    width 100%
+    background #fff
+    table-layout fixed
+    th
+        background #ccc
+        font-size 16px
+        font-weight bold
+        line-height 40px
+    tbody
+        tr
+            cursor pointer
+            height 44px
+            &:nth-child(odd)
+                background #eaeaea
+            &:hover
+                background #ddd !important
+    td
+        color #666
+        font-size 14px
+        line-height 44px
+        height 44px
+        padding 0 6px
+        border-left 1px solid #ccc
+        border-bottom 1px solid #ccc
+        &:last-child
+            border-right 1px solid #ccc
+        .ctn
+            display block
+            overflow hidden
+            white-space: nowrap
+            text-overflow ellipsis
+    .on
+        background greenyellow

@@ -35,32 +35,22 @@
 			</router-link>
 		</ul>
 		<div class="m-bsn" @click="isYYShow = !isYYShow" @mouseenter="itemEnter">
-			<i class="iconfont icon-business"></i>
-			<span class="title">预约报名</span>
+			<i class="iconfont icon-statistics"></i>
+			<span class="title">统计列表</span>
 			<span class="opr">
 				<i v-show="!isYYShow" class="iconfont icon-arrow-left"></i>
 				<i v-show="isYYShow" class="iconfont icon-arrow-bottom"></i>
 			</span>
 		</div>
 		<ul class="bsn-ul" v-show="isYYShow">
-			<router-link class="item" to="/business" tag="li">
+			<router-link class="item" to="/statistics/node" tag="li">
 				<a>
-					预约管理
+					节点
 				</a>
 			</router-link>
-			<router-link class="item" to="/business" tag="li">
+			<router-link class="item" to="/statistics/link" tag="li">
 				<a>
-					预约统计
-				</a>
-			</router-link>
-			<router-link class="item" to="/business" tag="li">
-				<a>
-					客服管理
-				</a>
-			</router-link>
-			<router-link class="item" to="/business" tag="li">
-				<a>
-					客服评价
+					链路
 				</a>
 			</router-link>
 		</ul>

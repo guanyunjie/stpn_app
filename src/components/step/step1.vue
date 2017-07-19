@@ -3,18 +3,18 @@
 */
 <template>
 	<div class="step1">
-		<app-title :name="'配置业务基本属性：选择端点'"></app-title>
+		<app-title id="sptnTitle" :name="'配置业务基本属性：选择端点'"></app-title>
 		<div class="step1-wrap">
 			<div id="routArea" class="s-rout" :style="{width: routWidth}">
 				<app-rout :nodeChecked="nodeChecked"
-						  :size="{width: routWidth, height: 800}"
+						  :size="{width: routWidth, height: routHeight}"
 						  :nodeSelectType="'multiple'"
 						  :selectedNodes="selectedNodes">
 
 				</app-rout>
 			</div>
-			<div class="drag-line" @click="suofang"></div>
-			<div class="panel">
+			<div class="drag-line" @mousedown.left="isDragDown = true"></div>
+			<div id="panel" class="panel">
 				<h4 class="title">已选节点</h4>
 				<div class="own-node-wrap">
 					<div class="own-node">
@@ -49,10 +49,10 @@
 						</tbody>
 					</table>
 				</div>
-				<router-link class="btn-step" to="/business/create">
+				<router-link class="btn-step" activeClass="btn-active" to="/business/create">
 					上一步
 				</router-link>
-				<router-link class="btn-step" to="/business/create/port">
+				<router-link class="btn-step" activeClass="btn-active" to="/business/create/port">
 					下一步
 				</router-link>
 			</div>
@@ -70,8 +70,30 @@
 	  	  	return {
 	  	  	  	selectedNodes: [],
 				tunnelInfo: [],
-				routWidth: 800
+				routWidth: 800,
+				routHeight: 0,
+				isDragDown: false
 			}
+		},
+		created() {},
+		mounted() {
+			let menuHeight = document.getElementById('menu').clientHeight;
+			let titleHeight = document.getElementById('sptnTitle').clientHeight;
+			this.routHeight = menuHeight - titleHeight;
+			// 为panel div设置高度。铺满屏幕
+			document.getElementById('panel').style.height = this.routHeight + 'px';
+			// 添加拖拽事件。缩放拓扑图
+	  	  	document.addEventListener('mousemove', (e) => {
+	  	  	  	if (this.isDragDown && e.which === 1) {
+	  	  	  	  	let menuWidth = document.getElementById('menu').clientWidth;
+					console.log(menuWidth);
+	  	  	  	  	this.routWidth = e.x - menuWidth;
+				}
+			});
+	  	  	document.addEventListener('mouseup', (e) => {
+	  	  	  	this.isDragDown = false;
+	  	  	  	// 重绘拓扑图
+			});
 		},
 	  	components: {
 	  	  	'app-title': title,
