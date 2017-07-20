@@ -12,7 +12,7 @@
 					<img src="/static/img/3265549600663283.jpg" width="32" height="32" alt="">
 					<span>管理员</span>
 					<ul v-show="isLoginShow">
-						<li class="l-item">注销</li>
+						<li class="l-item" @click="logout">注销</li>
 					</ul>
 				</div>
 			</div>
@@ -24,10 +24,16 @@
 
 <script type="text/ecmascript-6">
 	export default {
+	  	props: ['emit'],
 	  	data() {
 	  	  	return {
 			  	isLoginShow: false
 		  	}
+		},
+		methods: {
+			logout() {
+			  	this.emit.$emit('sign', false);
+			}
 		}
 	};
 </script>

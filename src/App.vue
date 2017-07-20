@@ -1,12 +1,15 @@
 <template>
 	<div id="app">
-		<div class="app-head">
-			<app-head></app-head>
+		<div class="login" v-show="!isLogin">
+			<app-login :emit="vue"></app-login>
 		</div>
-		<div id="menu" class="menu">
+		<div class="app-head" v-show="isLogin">
+			<app-head :emit="vue"></app-head>
+		</div>
+		<div id="menu" class="menu" v-show="isLogin">
 			<app-menu :emit="vue"></app-menu>
 		</div>
-		<div id="mainArea" class="main">
+		<div id="mainArea" class="main" v-show="isLogin">
 			<router-view></router-view>
 		</div>
 	</div>
@@ -15,6 +18,7 @@
 <script>
 	import Head from './components/head.vue';
 	import Menu from './components/menu.vue';
+	import Login from './components/login.vue';
 	import Vue from 'vue';
 	let velocity = require('velocity-animate');
 
@@ -22,16 +26,21 @@
 		name: 'app',
 		components: {
 			'app-head': Head,
-			'app-menu': Menu
+			'app-menu': Menu,
+			'app-login': Login
 		},
 		data() {
 		  	return {
 				isMenuOpen: true,
 				vue: new Vue(),
-				menuWidth: 225
+				menuWidth: 225,
+				isLogin: false
 			}
 		},
 		mounted() {
+		  	this.vue.$on('sign', (isLogin) => {
+		  	  	this.isLogin = isLogin;
+			});
 		  	this.vue.$on('menuChange', (isMenuOpen) => {
 				this.menuWidth = isMenuOpen ? 225 : 35;
 				velocity(document.getElementById('menu'),
@@ -48,6 +57,16 @@
 						duration: 250
 					}
 				);
+				let nodeBack = document.getElementById('node-back');
+				if (nodeBack) {
+					velocity(nodeBack,
+						{'left': this.menuWidth},
+						{
+							easing: 'linear',
+							duration: 250
+						}
+					);
+				}
 			});
 		  	this.vue.$on('hoverChange', (isMenuOpen) => {
 				this.menuWidth = isMenuOpen ? 225 : 35;

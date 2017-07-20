@@ -32,11 +32,11 @@
 							   :color="{bc: 'linear-gradient(#d49665, #9a6943)', fc: '#fff'}"
 							   :border="false">
 				</app-paragraph>
-				<table class="view-tab">
+				<table class="view-tab" style="width: 90%;">
 					<tbody>
 						<tr>
-							<th>保护类型</th>
-							<td>{{selectBusiness.prototype}}</td>
+							<th width="30%">保护类型</th>
+							<td width="70%">{{selectBusiness.prototype}}</td>
 						</tr>
 						<tr>
 							<th>VPN类型</th>
@@ -125,6 +125,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+	@import "../../common/stylus/main.styl";
+
 	.view
 		text-align left
 		background #f2f2f2
@@ -191,25 +193,6 @@
 				padding 0 0 70px 0
 				border-bottom 1px solid #ccc
 				position relative
-				.view-tab
-					width 90%
-					margin 20px auto
-					border 5px solid #fff1e5
-					tr
-						color #4c4c4c
-						font-size 14px
-						th
-							line-height 40px
-							height 40px
-							width 30%
-							padding-left 26px
-							border-right 1px dashed #ccc
-							border-bottom 1px dashed #ccc
-						td
-							width 68%
-							line-height 40px
-							padding-left 26px
-							border-bottom 1px dashed #ccc
 			.lx-title
 				background #91c854
 				height 50px
