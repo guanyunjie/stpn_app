@@ -1,15 +1,15 @@
 <template>
 	<div id="app">
-		<div class="login" v-show="!isLogin">
+		<div class="login" v-if="!isLogin">
 			<app-login :emit="vue"></app-login>
 		</div>
-		<div class="app-head" v-show="isLogin">
+		<div class="app-head" v-if="isLogin">
 			<app-head :emit="vue"></app-head>
 		</div>
-		<div id="menu" class="menu" v-show="isLogin">
+		<div id="menu" class="menu" v-if="isLogin">
 			<app-menu :emit="vue"></app-menu>
 		</div>
-		<div id="mainArea" class="main" v-show="isLogin">
+		<div id="mainArea" class="main" v-if="isLogin">
 			<router-view></router-view>
 		</div>
 	</div>
@@ -39,6 +39,9 @@
 		},
 		mounted() {
 		  	this.vue.$on('sign', (isLogin) => {
+		  	    if (!isLogin) {
+					location.href = '#/login';
+				}
 		  	  	this.isLogin = isLogin;
 			});
 		  	this.vue.$on('menuChange', (isMenuOpen) => {

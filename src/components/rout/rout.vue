@@ -64,7 +64,6 @@
 			// 数据视图配置
 			eChartsInstance.setOption({
 				title: {
-					text: 'SPTN拓扑图',
 					top: 'top',
 					left: 'left',
 					padding: [10, 30]
