@@ -21,11 +21,12 @@
 		<div class="login-panel">
 			<p class="p-title">SPTN5G登录界面</p>
 			<div id="uname" class="name">
-				<input type="text" v-model="name" @blur="nameBlur" @focus="nameErrMsg = ''" placeholder="enter you username">
+				<!-- 谷歌记住密码会使Input底色变为黄色，无法透明，关闭谷歌保存密码弹框 -->
+				<input type="text" autocomplete="off" v-model="name" @blur="nameBlur" @focus="nameErrMsg = ''" placeholder="enter you username">
 				<p class="msg" v-show="nameErrMsg">{{nameErrMsg}}</p>
 			</div>
 			<div class="pwd">
-				<input type="password" v-model="password" @blur="pwdBlur" @focus="pwdErrMsg = ''" placeholder="enter your password">
+				<input type="password" autocomplete="off" v-model="password" @keydown.enter="submit" @blur="pwdBlur" @focus="pwdErrMsg = ''" placeholder="enter your password">
 				<p class="msg" v-show="pwdErrMsg">{{pwdErrMsg}}</p>
 			</div>
 			<button class="login-btn" type="button" @click="submit">
@@ -41,15 +42,16 @@
 	  	props: ['emit'],
 		data() {
 			return {
-				rotateStyle: 'circle',
-				name: '',
-				password: '',
-				nameErrMsg: '',
-				pwdErrMsg: '',
-				loading: false
+				rotateStyle: 'circle',  /* 动画形状 */
+				name: '',	//	用户名
+				password: '',	//	密码
+				nameErrMsg: '',	// 用户名错误信息
+				pwdErrMsg: '',	// 密码错误信息
+				loading: false	// 登录生命周期
 			}
 		},
 		mounted() {
+	  	    /* 定时动画 */
 	  	  	setInterval(() => {
 	  	  	    if (this.rotateStyle === 'circle') {
 					this.rotateStyle = 'ring';
@@ -59,6 +61,7 @@
 			}, 15000);
 		},
 	  	methods: {
+	  	    /* 失去焦点时验证 */
 			nameBlur() {
 			  	if (this.name.length < 3 || this.name.length > 8) {
 			  	    this.nameErrMsg = '用户名长度必须大于三位数且少于八位数';
@@ -69,8 +72,19 @@
 					this.pwdErrMsg = '用户名长度必须大于三位数且少于八位数';
 				}
 			},
+			/* 点击登录按钮事件 */
 			submit() {
 			    this.loading = true;
+			    if (this.name !== 'admin') {
+			        this.nameErrMsg = '用户名不存在';
+					this.loading = false;
+			        return;
+				}
+				if (this.password !== 'admin') {
+			        this.pwdErrMsg = '密码错误';
+					this.loading = false;
+			        return;
+				}
 			    setTimeout(() => {
 			        this.loading = false;
 			        location.href = '#/';
@@ -123,8 +137,11 @@
 					width 100%
 					font-size 16px
 					padding-left 12px
-					background-color transparent
-					outline none
+					background-color transparent !important
+					outline none !important
+					user-select none
+					&:-webkit-autofill
+						-webkit-text-fill-color #fff
 				.msg
 					position: absolute;
 					font-size: 12px;
@@ -143,6 +160,7 @@
 				cursor pointer
 				outline none
 				border none
+				user-select none
 				&:hover
 					background linear-gradient(#b34a29, #9a2903)
 				.iconfont
@@ -160,6 +178,7 @@
 			position: relative;
 			transform-style: preserve-3d;
 			transform: rotate3d(1, 1, 1, 45deg)
+			user-select none
 			>div
 				backface-visibility visible
 				transition -webkit-transform 2s, opacity 2s;
@@ -236,73 +255,61 @@
 			.c12
 				transform rotateY(330deg) translateZ(ring)
 
-
-	@keyframes rotate {
-		0% {
+	// 立方体时的运动轨迹
+	@keyframes rotate
+		0%
 			transform: rotateX(-135deg) rotateY(-135deg) rotateZ(-135deg);
 			top 50%
 			left 50%
-		}
-		12.5% {
+		12.5%
 			transform: rotateX(-90deg) rotateY(-90deg) rotateZ(-90deg);
 			top 80%
 			left 70%
-		}
-		25% {
+		25%
 			transform: rotateX(-45deg) rotateY(-45deg) rotateZ(-45deg);
 			top 50%
 			left 90%
-		}
-		37.5% {
+		37.5%
 			transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 			top 20%
 			left 70%
-		}
-		50% {
+		50%
 			transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
 			top 50%
 			left 50%
-		}
-		62.5% {
+		62.5%
 			transform: rotateX(90deg) rotateY(90deg) rotateZ(90deg);
 			top 80%
 			left 30%
-		}
-		75% {
+		75%
 			transform: rotateX(135deg) rotateY(135deg) rotateZ(135deg);
 			top 50%
 			left 10%
-		}
-		87.5% {
+		87.5%
 			transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
 			top 20%
 			left 30%
-		}
-		100% {
+		100%
 			transform: rotateX(-135deg) rotateY(-135deg) rotateZ(-135deg);
 			top 50%
 			left 50%
-		}
-	}
 
-	@keyframes spin {
-		0% {
+	/* 变成环形后的运动轨迹 */
+	@keyframes spin
+		0%
 			transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg)
-		}
-		50% {
-			transform: rotateX(0deg) rotateY(-180deg) rotateZ(20deg)
-		}
-		100%{
-			transform: rotateX(0deg) rotateY(-360deg) rotateZ(0deg)
-		}
-	}
 
-	@keyframes icon {
-		from {
+		50%
+			transform: rotateX(0deg) rotateY(-180deg) rotateZ(20deg)
+
+		100%
+			transform: rotateX(0deg) rotateY(-360deg) rotateZ(0deg)
+
+	/* 登录中等待服务端验证动画 */
+	@keyframes icon
+		from
 			transform rotate(0deg)
-		}
-		to {
+		to
 			transform rotate(360deg)
-		}
-	}
+
 </style>

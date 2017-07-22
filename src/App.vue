@@ -107,6 +107,7 @@
 		bottom 0px
 		height 100%
 		z-index 99
+		user-select none
 	.main
 		margin-top 54px
 		position absolute

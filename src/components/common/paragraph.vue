@@ -23,4 +23,5 @@
 		font-weight bold
 		border-bottom 1px dashed #ccc
 		line-height 50px
+		user-select none
 </style>

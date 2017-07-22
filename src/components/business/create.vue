@@ -10,7 +10,7 @@
 						   :border="false">
 			</app-paragraph>
 			<div class="tab-wrap">
-				<table class="view-tab">
+				<table class="create-tab">
 					<tbody>
 						<tr>
 							<th>业务带宽：</th>
@@ -226,7 +226,7 @@
 				margin 30px 90px
 				padding 30px 50px
 				border 1px dashed #ccc
-				.view-tab
+				.create-tab
 					tr
 						color #4c4c4c
 						font-size 16px

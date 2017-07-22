@@ -14,15 +14,15 @@
 				<span class="title">拓扑</span>
 			</div>
 		</router-link>
-		<div class="m-bsn" @click="isBusShow = !isBusShow" @mouseenter="itemEnter">
+		<div class="m-bsn" @click="isBusinessShow = !isBusinessShow" @mouseenter="itemEnter">
 			<i class="iconfont icon-business"></i>
 			<span class="title">业务</span>
 			<span class="opr">
-				<i v-show="!isBusShow" class="iconfont icon-arrow-left"></i>
-				<i v-show="isBusShow" class="iconfont icon-arrow-bottom"></i>
+				<i v-show="!isBusinessShow" class="iconfont icon-arrow-left"></i>
+				<i v-show="isBusinessShow" class="iconfont icon-arrow-bottom"></i>
 			</span>
 		</div>
-		<ul class="bsn-ul" v-show="isBusShow" @mouseenter="itemEnter">
+		<ul class="bsn-ul" v-show="isBusinessShow" @mouseenter="itemEnter">
 			<router-link class="item" to="/business/create" tag="li">
 				<a>
 					创建业务
@@ -34,15 +34,15 @@
 				</a>
 			</router-link>
 		</ul>
-		<div class="m-bsn" @click="isYYShow = !isYYShow" @mouseenter="itemEnter">
+		<div class="m-bsn" @click="isStatisticsShow = !isStatisticsShow" @mouseenter="itemEnter">
 			<i class="iconfont icon-statistics"></i>
 			<span class="title">统计列表</span>
 			<span class="opr">
-				<i v-show="!isYYShow" class="iconfont icon-arrow-left"></i>
-				<i v-show="isYYShow" class="iconfont icon-arrow-bottom"></i>
+				<i v-show="!isStatisticsShow" class="iconfont icon-arrow-left"></i>
+				<i v-show="isStatisticsShow" class="iconfont icon-arrow-bottom"></i>
 			</span>
 		</div>
-		<ul class="bsn-ul" v-show="isYYShow">
+		<ul class="bsn-ul" v-show="isStatisticsShow">
 			<router-link class="item" to="/statistics/node" tag="li">
 				<a>
 					节点
@@ -62,36 +62,40 @@
 	  	props: ['emit'],
 	  	data() {
 	  	 	return {
-	  	 	  	isBusShow: false,
-				isYYShow: false,
-				isMenuOpen: true,
-				isMoControl: true
+	  	 	  	isBusinessShow: false,	// 业务目录是否打开
+				isStatisticsShow: false,	//	统计列表是否打开
+				isMenuOpen: true,	// 目录是否展开
+				isMoControl: true	// 判断是滑入展开 还是点击展开按钮
 			};
 		},
 		methods: {
 			menuOper() {
 			  	if (this.isMenuOpen !== this.isMoControl) {
+			  	    /* 滑入展开后再点击按钮--> 重置状态 */
 			  	  	this.isMenuOpen = false;
 			  	  	this.isMoControl = false;
 				} else {
 					this.isMenuOpen = !this.isMenuOpen;
 					this.isMoControl = !this.isMoControl;
 				}
-				this.isBusShow = false;
-				this.isYYShow = false;
+				// 无论展开还是关闭  默认关闭一级目录
+				this.isBusinessShow = false;
+				this.isStatisticsShow = false;
+				// 通知其他组件菜单栏宽度发生改变
 			  	this.emit.$emit('menuChange', this.isMenuOpen);
 			},
 			itemEnter() {
 			  	if (!this.isMenuOpen) {
 					this.isMenuOpen = true;
+					// 通知其他组件菜单栏宽度并未真是改变
 					this.emit.$emit('hoverChange', this.isMenuOpen);
 				}
 			},
 			itemLeave() {
 			  	if (!this.isMoControl) {
 					this.isMenuOpen = false;
-					this.isBusShow = false;
-					this.isYYShow = false;
+					this.isBusinessShow = false;
+					this.isStatisticsShow = false;
 					this.emit.$emit('hoverChange', this.isMenuOpen);
 				}
 			}

@@ -6,7 +6,7 @@
 		<app-title :name="'统计列表：节点'"></app-title>
 		<div class="node-wrap">
 			<div class="rotate-box" :style="{transform: rotate, height: rotateHeight + 'px'}">
-				<div class="rotate-tab">
+				<div class="rotate-tab" :style="{transform: translateZ}">
 					<table class="custom-tab">
 						<thead>
 						<tr>
@@ -36,7 +36,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="rotate-panel">
+				<div class="rotate-panel" :style="{transform: ' rotateY(90deg) '+translateZ}">
 					<app-paragraph :name="'节点详情：'+selectNodeId"
 								   :color="{bc: 'linear-gradient(#d49665, #9a6943)', fc: '#fff'}"
 								   :border="true">
@@ -119,31 +119,57 @@
 	  	  	  	arr.push(Math.floor(Math.random() * 100));
 			}
 	  	  	return {
-	  	  	  	nodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+	  	  	  	nodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 				rotate: 'rotateY(0deg)',
 				selectNodeId: '',
 				ports: arr,
 				rotateHeight: 0,
-				isBackShow: false
+				isBackShow: false,
+				translateZ: ''
 			}
 		},
 	  	components: {
 	  	  	'app-title': title,
 			'app-paragraph': paragraph
 		},
+		mounted() {
+	  	    /* 默认translateZ */
+	  	  	let width = document.getElementsByClassName('rotate-tab')[0].clientWidth;
+	  	  	this.translateZ = 'translateZ(' + (width / 2) + 'px)';
+		},
 		methods: {
-	  	  	selectTr(id) {
+			/**
+			 * 点击tr时事件
+			 * @param id
+			 */
+			selectTr(id) {
+	  	  	    this.updateTranslateZ();
 	  	  	  	this.rotate = 'rotateY(-89.99deg)';
 	  	  	  	this.selectNodeId = id;
 	  	  	  	let panelHeight = document.getElementsByClassName('rotate-panel')[0].clientHeight;
+	  	  	  	// 监听高度
 	  	  	  	this.rotateHeight = panelHeight + 50;
 	  	  	  	this.isBackShow = true;
 			},
+			/**
+			 * 点击back 图标事件
+			 */
 			backToTable() {
+				this.updateTranslateZ();
 				this.rotate = 'rotateY(0deg)';
 				let nodeHeight = document.getElementsByClassName('rotate-tab')[0].clientHeight;
+				// 监听高度
 				this.rotateHeight = nodeHeight + 50;
 				this.isBackShow = false;
+			},
+			/**
+			 * 旋转半径自适应屏幕宽度
+			 */
+			updateTranslateZ() {
+				let nodeWidth = document.getElementsByClassName('rotate-tab')[0].clientWidth;
+				let panelWidth = document.getElementsByClassName('rotate-panel')[0].clientWidth;
+				let width = nodeWidth > panelWidth ? nodeWidth : panelWidth;
+				this.translateZ = 'translateZ(' + (width / 2) + 'px)';
 			}
 		}
 	};
@@ -166,10 +192,8 @@
 					left: 0;
 					top: 0;
 				.rotate-tab
-					transform: translateZ(545px);
 					margin-bottom 50px
 				.rotate-panel
-					transform rotateY(90deg) translateZ(545px);
 					background #fff
 		.back
 			position fixed
@@ -189,7 +213,7 @@
 				transition 0.6s
 				top 50%
 				animation: move linear 3s infinite;
-
+	/* back 图标上下浮动 */
 	@keyframes move
 		0%
 			left 55%

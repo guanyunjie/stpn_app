@@ -28,6 +28,7 @@ var ywList = appDate.ywList;
 var topoList = appDate.topoList;
 var links = appDate.links;
 var nodes = appDate.nodes;
+var staLinks = appDate.statistics.links;
 
 var apiRoutes = express.Router();
 
@@ -78,6 +79,25 @@ apiRoutes.get('/link/:id', function (req, res) {
 	}
 	res.json({
 		result: link
+	});
+});
+
+apiRoutes.get('/statistics/links/:num', function (req, res) {
+	var num = req.params.num;
+	var size = 15;
+	var total = staLinks.length;
+	var pageTotal = Math.ceil(total / size);
+	var links = [];
+	for (var i = 0; i < size; i++) {
+		links.push(staLinks[(num - 1) * size + i]);
+	}
+	res.json({
+		result: {
+			currentPageNum: num,
+			count: total,
+			totalPageNum: pageTotal,
+			links: links
+		}
 	});
 });
 

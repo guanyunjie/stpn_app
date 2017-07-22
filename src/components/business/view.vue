@@ -202,6 +202,7 @@
 				font-size 20px
 				font-weight bold
 				line-height 50px
+				user-select none
 				.btns
 					height 50px
 					display inline-block

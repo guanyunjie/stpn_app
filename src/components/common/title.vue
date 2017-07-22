@@ -23,4 +23,5 @@
 		padding-left 26px
 		font-weight bold
 		border-bottom 1px solid #ccc
+		user-select none
 </style>
