@@ -2,7 +2,7 @@
 * Created by Guanyunjie on 2017/7/22.
 */
 <template>
-	<div class="pagination" v-if="pageNum > 0">
+	<div class="pagination" v-show="pageNum > 0">
 		<em class="prev" @click="previous" :class="{'disabled': curNum === 1}">
 			<i class="iconfont icon-arrow-left"></i>上一页
 		</em>
@@ -25,9 +25,8 @@
 
 <script type="text/ecmascript-6">
 	let $ = window.jQuery = window.$ = require('jquery');
-
 	export default {
-	    props: ['pageNum', 'currentNum', 'emit'],
+	    props: ['pageNum', 'currentNum', 'emit', 'random'],
 		data() {
 			return {
 				prevDotShow: false,
@@ -36,9 +35,12 @@
 			}
 		},
 		mounted() {
-	        setTimeout(() => {
-				this.curNum = 1;
-			}, 5000)
+	        let time = setInterval(() => {
+	            if (this.curNum === 'zero') {
+					this.curNum = 1;
+					clearInterval(time);
+				}
+			}, 10);
 		},
 		methods: {
 			previous() {
@@ -64,17 +66,14 @@
 			        newArr.push(item);
 				});
 			    return newArr.reverse();
-			}
-		},
-		watch: {
-			curNum(now, old) {
-			    this.emit.$emit('pageChange', now);
+			},
+			paginationLoad(now, old) {
 				if (this.pageNum <= 9) {
 					this.prevDotShow = false;
 					this.nextDotShow = false;
 					$.each($('.pagination>.num'), (index, item) => {
-						$(item).text(index + 1).removeClass('on');
-						if (index + 1 === this.curNum) {
+						$(item).text(index + 1).show().removeClass('on');
+						if (index + 1 === now) {
 							$(item).text(index + 1).addClass('on');
 						}
 						if (index + 1 > this.pageNum) {
@@ -86,9 +85,9 @@
 						this.prevDotShow = false;
 						this.nextDotShow = true;
 						$.each($('.pagination>.num'), (index, item) => {
-							$(item).text(index + 1).removeClass('on');
-							if (index + 1 === this.curNum) {
-								$(item).text(this.curNum).addClass('on');
+							$(item).text(index + 1).show().removeClass('on');
+							if (index + 1 === now) {
+								$(item).text(now).addClass('on');
 							}
 							if (index + 1 === $('.pagination>.num').length) {
 								$(item).text(this.pageNum);
@@ -110,19 +109,19 @@
 						this.prevDotShow = true;
 						this.nextDotShow = true;
 						$.each($('.pagination>.num'), (index, item) => {
-							$(item).text(this.pageNum - index).removeClass('on');
+							$(item).text(this.pageNum - index).show().removeClass('on');
 							if (index === 0) {
 								$(item).text(1);
 							} else if (index + 1 === $('.pagination>.num').length) {
 								$(item).text(this.pageNum);
 							} else {
-							    $(item).text(this.curNum + index + 1 - 5);
-							    if (index + 1 === 5) {
+								$(item).text(now + index + 1 - 5);
+								if (index + 1 === 5) {
 									$(item).addClass('on');
 								}
-								if (old === this.curNum + index + 1 - 5) {
+								if (old === now + index + 1 - 5) {
 									$(item).addClass('on');
-							        setTimeout(() => {
+									setTimeout(() => {
 										$(item).removeClass('on');
 									}, 200);
 								}
@@ -130,6 +129,17 @@
 						});
 					}
 				}
+			}
+		},
+		watch: {
+			random(now) {
+			    console.log(now);
+				this.emit.$emit('pageChange', 1);
+				this.paginationLoad(1, 1);
+			},
+			curNum(now, old) {
+			    this.emit.$emit('pageChange', now);
+				this.paginationLoad(now, old);
 			}
 		}
 	}

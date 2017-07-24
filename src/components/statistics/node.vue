@@ -3,17 +3,22 @@
 */
 <template>
 	<div class="sta-node">
-		<app-title :name="'统计列表：节点'"></app-title>
+		<app-title :name="'统计列表：节点  共（'+devices.length+'条）'"></app-title>
 		<div class="node-wrap">
 			<div class="rotate-box" :style="{transform: rotate, height: rotateHeight + 'px'}">
 				<div class="rotate-tab" :style="{transform: translateZ}">
-					<table class="custom-tab">
+					<div class="search">
+						<input id="searchValue" type="text" @keydown.13="searchDevice" placeholder="search...">
+						<a class="search-btn" @click="searchDevice" href="javascript:;"><i class="iconfont icon-search"></i></a>
+					</div>
+					<app-loading v-show="loadState === 'loading'"></app-loading>
+					<table class="custom-tab" v-show="loadState === 'loaded'">
 						<thead>
 						<tr>
 							<th width="2">序号</th>
 							<th width="5">名称</th>
 							<th width="5">节点ID</th>
-							<th width="3">MASTER</th>
+							<th width="5">MASTER</th>
 							<th width="2">端口数</th>
 							<th width="4">地点</th>
 							<th width="5">H/W 版本</th>
@@ -22,19 +27,23 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr v-for="node in nodes" :class="{odd: node % 2 === 1}" title="点击查看详情" @click="selectTr(node)">
-							<td>{{node}}</td>
-							<td><span class="ctn" title="of:123456780abe1740">of:123456780abe1740</span></td>
-							<td><span class="ctn" title="of:123456780abe1740">of:123456780abe1740</span></td>
-							<td>127.0.0.1</td>
-							<td>36</td>
-							<td>Fiberhome</td>
-							<td>Fiberhome</td>
-							<td><span class="ctn" title="sfjfhleifuhslifslfvnjhelfshflihfelsifhsuiefsfjfhleifuhslifslfvnjhelfshflihfelsifhsuiefsfjfhleifuhslifslfvnjhelfshflihfelsifhsuief">sfjfhleifuhslifslfvnjhelfshflihfelsifhsuiefsfjfhleifuhslifslfvnjhelfshflihfelsifhsuiefsfjfhleifuhslifslfvnjhelfshflihfelsifhsuief</span></td>
-							<td>OF_13</td>
-						</tr>
+							<tr v-for="(device, index) in page(devices)" title="点击查看详情" @click="selectTr(device.id)">
+								<td>{{pageSize * (currentNum - 1) + index + 1}}</td>
+								<td><span class="ctn" title="of:123456780abe1740">{{device.name}}</span></td>
+								<td><span class="ctn" title="of:123456780abe1740">{{device.nodeid}}</span></td>
+								<td>{{device.master}}</td>
+								<td>{{device.ports}}</td>
+								<td>{{device.site}}</td>
+								<td>{{device.hw}}</td>
+								<td><span class="ctn" :title="device.sw">{{device.sw}}</span></td>
+								<td>{{device.proto}}</td>
+							</tr>
 						</tbody>
 					</table>
+					<div class="pagination-wrap" v-show="loadState === 'loaded'">
+						<app-noresult :length="devices.length"></app-noresult>
+						<app-pagination :emit="emit" :random="random" :pageNum="pageTotalNum" :currentNum="currentNum"></app-pagination>
+					</div>
 				</div>
 				<div class="rotate-panel" :style="{transform: ' rotateY(90deg) '+translateZ}">
 					<app-paragraph :name="'节点详情：'+selectNodeId"
@@ -111,31 +120,68 @@
 <script type="text/ecmascript-6">
 	import title from '../common/title.vue';
 	import paragraph from '../common/paragraph.vue';
+	import pagination from '../common/pagination.vue';
+	import loading from '../common/loading.vue';
+	import noresult from '../common/noresult.vue';
+	import Vue from 'vue';
 
 	export default {
 	  	data() {
 	  	  	let arr = [];
-	  	  	for (let i = 0; i < 30; i++) {
+	  	  	for (let i = 0; i < 10; i++) {
 	  	  	  	arr.push(Math.floor(Math.random() * 100));
 			}
 	  	  	return {
-	  	  	  	nodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+				loadState: 'loading',
+	  	  	    cacheDevices: [],
+				devices: [],
 				rotate: 'rotateY(0deg)',
 				selectNodeId: '',
 				ports: arr,
 				rotateHeight: 0,
 				isBackShow: false,
-				translateZ: ''
+				translateZ: '',
+				// 分页字段
+				pageTotalNum: 0,
+				pageSize: 15,
+				emit: new Vue(),
+				oldValue: '',
+				currentNum: 1,	// 未知生命周期   用轮询模拟
+				isSearch: false,
+				random: this.getRandom()
 			}
 		},
 	  	components: {
 	  	  	'app-title': title,
-			'app-paragraph': paragraph
+			'app-paragraph': paragraph,
+			'app-pagination': pagination,
+			'app-loading': loading,
+			'app-noresult': noresult
+		},
+		created() {
+	  	    /**
+			 * 调用接口获取节点数据
+			 */
+	  	    setTimeout(() => {
+				this.$http.get('/api/statistics/devices').then((res) => {
+					let result = res.body.result;
+					this.cacheDevices = result.devices;
+					this.devices = result.devices;
+					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
+					this.loadState = 'loaded';
+					this.random = this.getRandom();
+				});
+			}, 2000);
 		},
 		mounted() {
 	  	    /* 默认translateZ */
 	  	  	let width = document.getElementsByClassName('rotate-tab')[0].clientWidth;
 	  	  	this.translateZ = 'translateZ(' + (width / 2) + 'px)';
+			this.emit.$on('pageChange', (now) => {
+				if (this.currentNum !== now) {
+					this.currentNum = now;
+				}
+			});
 		},
 		methods: {
 			/**
@@ -170,6 +216,42 @@
 				let panelWidth = document.getElementsByClassName('rotate-panel')[0].clientWidth;
 				let width = nodeWidth > panelWidth ? nodeWidth : panelWidth;
 				this.translateZ = 'translateZ(' + (width / 2) + 'px)';
+			},
+			/**
+			 * 分页显示
+			 * @param devices
+			 * @returns {Array}
+			 */
+			page(devices) {
+				if (this.isSearch) {
+					this.currentNum = 1;
+					this.isSearch = false;
+				}
+				return devices.filter((device, index) => {
+					return index >= this.pageSize * (this.currentNum - 1) && index < this.pageSize * this.currentNum;
+				});
+			},
+			/**
+			 * 搜索框事件
+			 */
+			searchDevice() {
+				this.isSearch = true;
+				let searchValue = document.getElementById('searchValue').value.replace(/\/s/g, '');
+				if (this.oldValue !== searchValue) {
+				    this.oldValue = searchValue;
+					this.devices = this.cacheDevices.filter((device) => {
+						return device.name.includes(searchValue);
+					});
+					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
+					this.random = this.getRandom();
+				}
+			},
+			/**
+			 * 获取六位随机数
+			 * @returns {string}
+			 */
+			getRandom() {
+				return ('00000' + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
 			}
 		}
 	};
@@ -189,10 +271,31 @@
 				transition 0.5s
 				.rotate-tab, .rotate-panel
 					position absolute
-					left: 0;
-					top: 0;
+					left 0
+					top 0
 				.rotate-tab
+					position relative
 					margin-bottom 50px
+					.pagination-wrap
+						margin 20px 0
+					.search
+						position: absolute
+						top: -78px
+						right: 0
+						margin: 10px 45px
+						border-bottom 1px solid #ccc
+						line-height: 25px
+						input
+							color #ddd
+							outline none
+							width 150px
+							padding-left 6px
+							background-color: transparent !important;
+						.search-btn
+							display inline-block
+							padding 0 3px
+							.iconfont
+								color #ccc
 				.rotate-panel
 					background #fff
 		.back

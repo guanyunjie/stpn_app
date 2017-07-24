@@ -37,6 +37,7 @@
 				isLogin: false
 			}
 		},
+		created() {},
 		mounted() {
 		  	this.vue.$on('sign', (isLogin) => {
 		  	    if (!isLogin) {

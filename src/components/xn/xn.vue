@@ -83,7 +83,7 @@
 	let $ = window.jQuery = window.$ = require('jquery/dist/jquery.min');
 	// velocity-animate特效
 	require('velocity-animate/velocity.min');
-	require('velocity-animate/velocity.ui.min')
+	require('velocity-animate/velocity.ui.min');
 
   	export default {
   	  	data() {
