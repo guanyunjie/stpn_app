@@ -11,10 +11,11 @@
 			</app-paragraph>
 			<ul v-if="items.length > 0">
 				<router-link class="item"
+							 :class="{'list-active': index === 0 && beforeSelectYw}"
 							 v-for="(item, index) in items"
 							 tag="li"
 							 v-show="index >= 7 * selectIndex && index < 7 * selectIndex + 7 || isListShow"
-							 active-class="list-active"
+							 activeClass="list-active"
 							 @click.native="selectYW(item, index)"
 							 :to="{path: '/business/view/'+item.id}">
 					<a>
@@ -22,6 +23,10 @@
 					</a>
 				</router-link>
 			</ul>
+			<div class="noyw">
+				<i class="iconfont icon-noresult"></i>
+				<p class="content">当前业务空空如也！赶快去<button type="button">创建一条</button>吧！</p>
+			</div>
 			<button type="button" class="oper-biz" v-show="items.length > 7" @click="isListShow = !isListShow">
 				<span v-text="isListShow ? '收起' : '打开'"></span>
 			</button>
@@ -87,20 +92,22 @@
 	import paragraph from '../common/paragraph.vue';
 
 	export default {
-	  	created() {
-	  	  	let _this = this;
-
-			this.$http.get('/api/ywList').then((res) => {
-				_this.items = res.data.result;
-			});
-		},
 	  	data() {
 	  	  	return {
+				beforeSelectYw: true,
 			  	items: [],
 				selectIndex: 0,
 				selectBusiness: {},
 				isListShow: true
 		  	}
+		},
+		created() {
+			this.$http.get('/api/ywList').then((res) => {
+				this.items = [];
+				if (this.items.length > 0) {
+					this.selectYW(this.items[0], 0);
+				}
+			});
 		},
 		methods: {
 			selectYW(item, index) {
@@ -114,7 +121,9 @@
 			'app-paragraph': paragraph
 		},
 		beforeRouteLeave(to, from, next) {
-	  	  	console.log(to.path)
+		   	if (from.path === '/business/view') {
+				this.beforeSelectYw = false;
+		   	}
 	  	  	if (to.path === '/business/view/' + this.selectBusiness.id + '/xn') {
 				console.log('sfsfasefsf')
 			}
@@ -144,6 +153,26 @@
 			margin 30px auto
 			position relative
 			border 1px solid #ccc
+			.noyw
+				text-align center
+				line-height 500px
+				.iconfont
+					font-size 36px
+					color #666
+				.content
+					display inline-block
+					color #666
+					button
+						border none
+						outline none
+						cursor pointer
+						border-radius 3px
+						background linear-gradient(#fff, #fff)
+						padding 0 12px
+						margin 0 5px
+						color red
+						line-height 20px
+
 			ul
 				width 90%
 				margin 10px auto

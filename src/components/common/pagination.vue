@@ -3,7 +3,7 @@
 */
 <template>
 	<div class="pagination" v-show="pageNum > 0">
-		<em class="prev" @click="previous" :class="{'disabled': curNum === 1}">
+		<em class="prev" @click="previous" :class="{'disabled': curNum === 1 || !curNum}">
 			<i class="iconfont icon-arrow-left"></i>上一页
 		</em>
 		<em class="num" @click="selectPageNum"></em>
@@ -17,7 +17,7 @@
 		<em class="num" @click="selectPageNum"></em>
 		<em class="dot" @click="selectPageNum" v-show="nextDotShow">...</em>
 		<em class="num" @click="selectPageNum"></em>
-		<em class="next" @click="prospective" :class="{'disabled': curNum === pageNum}">
+		<em class="next" @click="prospective" :class="{'disabled': !curNum || curNum === pageNum}">
 			下一页<i class="iconfont icon-arrow-right"></i>
 		</em>
 	</div>
@@ -153,6 +153,7 @@
 		line-height 40px
 		transition 0.3s
 		user-select none
+		margin 20px 0
 		em
 			font-style normal
 			font-size 14px

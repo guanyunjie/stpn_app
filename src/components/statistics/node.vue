@@ -3,7 +3,7 @@
 */
 <template>
 	<div class="sta-node">
-		<app-title :name="'统计列表：节点  共（'+devices.length+'条）'"></app-title>
+		<app-title :name="title"></app-title>
 		<div class="node-wrap">
 			<div class="rotate-box" :style="{transform: rotate, height: rotateHeight + 'px'}">
 				<div class="rotate-tab" :style="{transform: translateZ}">
@@ -16,7 +16,9 @@
 						<thead>
 						<tr>
 							<th width="2">序号</th>
-							<th width="5">名称</th>
+							<th width="5" class="col-sort" @click="sortByField">
+								名称 <i class="iconfont" :class="isDesc ? 'icon-desc' : 'icon-asc'"></i>
+							</th>
 							<th width="5">节点ID</th>
 							<th width="5">MASTER</th>
 							<th width="2">端口数</th>
@@ -132,6 +134,8 @@
 	  	  	  	arr.push(Math.floor(Math.random() * 100));
 			}
 	  	  	return {
+	  	  	    title: '统计列表',
+				isDesc: true,	// 排序默认正序
 				loadState: 'loading',
 	  	  	    cacheDevices: [],
 				devices: [],
@@ -170,6 +174,7 @@
 					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
 					this.loadState = 'loaded';
 					this.random = this.getRandom();
+					this.title = '统计列表：节点 共（' + this.devices.length + '条）';
 				});
 			}, 2000);
 		},
@@ -243,8 +248,16 @@
 						return device.name.includes(searchValue);
 					});
 					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
+					this.title = '统计列表：搜索“' + searchValue + '”的结果共有' + this.devices.length + '条';
+					if (searchValue.length === 0) {
+						this.title = '统计列表：节点 共（' + this.devices.length + '条）';
+					}
 					this.random = this.getRandom();
 				}
+			},
+			sortByField() {
+			    this.isDesc = !this.isDesc;
+				this.devices = this.devices.reverse();
 			},
 			/**
 			 * 获取六位随机数
@@ -277,7 +290,7 @@
 					position relative
 					margin-bottom 50px
 					.pagination-wrap
-						margin 20px 0
+						position relative
 					.search
 						position: absolute
 						top: -78px

@@ -2,7 +2,7 @@
 * Created by Guanyunjie on 2017/7/24.
 */
 <template>
-	<div class="loading">
+	<div id="loading" class="loading" ref="loading">
 		<i class="iconfont icon-wait"></i>
 		<span>loading...</span>
 	</div>
@@ -10,6 +10,13 @@
 
 <script type="text/ecmascript-6">
 
+	export default {
+	    created() {},
+	    mounted() {
+			let ch = document.getElementById('mainArea').clientHeight;
+			document.getElementById('loading').style.lineHeight = ch - 150 + 'px';
+		}
+	};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -26,6 +33,7 @@
 			font-size 24px
 			color #666
 			margin-left 15px
+			user-select none
 
 	@keyframes icon
 		from

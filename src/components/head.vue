@@ -43,20 +43,15 @@
 	head-height = 48px
 
 	.s-head
-		position fixed
-		left 0px
-		right 0px
-		top 0px
 		height head-height
 		width 100%
 		border-top 1px solid #000
 		border-bottom 1px solid #000
 		box-shadow inset 0 0 1px 0px #dcd4d4
 		background linear-gradient(#484848, #1b1a1a)
-		z-index 999
+		z-index 9999
 		.wrap
 			position relative
-			overflow hidden
 			.logo
 				height head-height
 				width 150px
@@ -68,8 +63,8 @@
 					left 55px
 			.login
 				position absolute
-				top 0px
-				right 0px
+				top 0
+				right 0
 				margin 0 30px
 				color #fff
 				line-height head-height
@@ -85,14 +80,15 @@
 						background #333
 						position absolute
 						bottom 0px
-						left -30px
+						left 6px
 						z-index 99
 						border 1px solid #000
 						border-radius 3px
 						.l-item
-							width 80px
-							padding 8px 20px
-							line-height 20px
+							width 36px
+							padding 0px 20px
+							line-height 23px
+							font-size 12px
 							color #ccc
 		.red-line
 			position relative

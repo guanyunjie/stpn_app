@@ -3,7 +3,7 @@
 */
 <template>
 	<div class="sta-link">
-		<app-title :name="'统计列表：链路  共（'+links.length+'条）'"></app-title>
+		<app-title :name="title"></app-title>
 		<div class="link-wrap">
 			<div class="table-wrap">
 				<div class="search">
@@ -52,6 +52,7 @@
 	export default {
 		data() {
 			return {
+				title: '统计列表',
 				loadState: 'loading',
 				cacheLinks: [],
 			    links: [],
@@ -78,6 +79,7 @@
 					this.links = result.links;
 					this.pageTotalNum = Math.ceil(this.links.length / this.pageSize);
 					this.loadState = 'loaded';
+					this.title = '统计列表：链路 共' + this.links.length + '条';
 					this.random = this.getRandom();
 				});
 			}, 2000);
@@ -115,6 +117,10 @@
 						return link.source.includes(searchValue);
 					});
 					this.pageTotalNum = Math.ceil(this.links.length / this.pageSize);
+					this.title = '统计列表：搜索“' + searchValue + '”的结果共有' + this.links.length + '条';
+					if (searchValue.length === 0) {
+						this.title = '统计列表：链路 共' + this.links.length + '条';
+					}
 					this.random = this.getRandom();
 				}
 			},

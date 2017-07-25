@@ -2,7 +2,7 @@
 * Created by Guanyunjie on 2017/7/24.
 */
 <template>
-	<div class="noresult" v-show="length === 0">
+	<div id="noresult" class="noresult" v-show="length === 0">
 		<i class="iconfont icon-noresult"></i>
 		<span>Oops…There is nothing here.</span>
 	</div>
@@ -10,7 +10,11 @@
 
 <script type="text/ecmascript-6">
 	export default {
-	    props: ['length']
+	    props: ['length'],
+		mounted() {
+			let ch = document.getElementById('mainArea').clientHeight;
+			document.getElementById('noresult').style.lineHeight = ch - 150 + 'px';
+		}
 	}
 </script>
 

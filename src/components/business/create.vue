@@ -3,7 +3,7 @@
 */
 <template>
 	<div class="s-create">
-		<app-title :name="'配置业务基本属性'"></app-title>
+		<app-title :name="'配置业务:1、基本属性'"></app-title>
 		<div class="c-wrap">
 			<app-paragraph :name="'基础信息'"
 						   :color="{bc: 'linear-gradient(rgb(40, 146, 136), rgb(42, 101, 95))', fc: '#fff'}"
@@ -13,28 +13,23 @@
 				<table class="create-tab">
 					<tbody>
 						<tr>
-							<th>业务带宽：</th>
-							<td>
+							<th>
+								<em class="important"><i class="iconfont icon-important"></i></em>
+								业务名称：
+							</th>
+							<td colspan="3">
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text" placeholder="请填写..." v-model.number="result.ywdk">
-									</div>
-								</div>
-							</td>
-							<th>路由策略：</th>
-							<td>
-								<div class="inp-wrap">
-									<div class="inp">
-										<input type="text" placeholder="请填写..." v-model="result.lycl">
+										<input type="text" placeholder="请填写..." v-model="result.name">
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th>保护类型：</th>
-							<td>
+							<th>最小保证带宽：</th>
+							<td colspan="2">
 								<div class="inp-wrap">
-									<div class="inp"
+									<div class="inp" style="width: 96%"
 										 @mouseenter="isSelectOpen1 = true"
 										 @mouseleave="isSelectOpen1 = false">
 										<label class="custom-select">
@@ -51,7 +46,6 @@
 									</div>
 								</div>
 							</td>
-							<th>VPN类型：</th>
 							<td>
 								<div class="inp-wrap">
 									<div class="inp"
@@ -74,36 +68,105 @@
 							</td>
 						</tr>
 						<tr>
-							<th>路由类型：</th>
-							<td colspan="3">
+							<th>峰值带宽：</th>
+							<td colspan="2">
 								<div class="inp-wrap">
-									<div class="radio">
-										<input id="radio_1_1" name="czsm" value="0" type="radio"
-											   v-model="result.lylx">
-										<span class="dot"
-											  :class="{'checked' : result.lylx === '0'}"></span>
-										<label for="radio_1_1" class="r-label">L2V</label>
+									<div class="inp" style="width: 96%"
+										 @mouseenter="isSelectOpen1 = true"
+										 @mouseleave="isSelectOpen1 = false">
+										<label class="custom-select">
+											<span>{{bhlxHtml}}</span>
+											<i class="iconfont"
+											   :class="isSelectOpen1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+										</label>
+										<ul class="custom-ul" v-show="isSelectOpen1">
+											<li class="custom-item" value="0" @click="selectBHLX">1+1保护</li>
+											<li class="custom-item" value="1" @click="selectBHLX">1+2保护</li>
+											<li class="custom-item" value="2" @click="selectBHLX">2+1保护</li>
+											<li class="custom-item" value="3" @click="selectBHLX">2+2保护</li>
+										</ul>
 									</div>
-									<div class="radio">
-										<input id="radio_1_2" name="czsm" value="1" type="radio"
-											   v-model="result.lylx">
-										<span class="dot"
-											  :class="{'checked' : result.lylx === '1'}"></span>
-										<label for="radio_1_2" class="r-label">L3VPF</label>
-									</div>
-									<div class="radio">
-										<input id="radio_1_3" name="czsm" value="2" type="radio"
-											   v-model="result.lylx">
-										<span class="dot"
-											  :class="{'checked' : result.lylx === '2'}"></span>
-										<label for="radio_1_3" class="r-label">L4VP</label>
+								</div>
+							</td>
+							<td>
+								<div class="inp-wrap">
+									<div class="inp"
+										 @mouseenter="isSelectOpen2 = true"
+										 @mouseleave="isSelectOpen2 = false">
+										<label class="custom-select">
+											<span>{{vpnHTML}}</span>
+											<i class="iconfont"
+											   :class="isSelectOpen2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+										</label>
+										<ul class="custom-ul" v-show="isSelectOpen2">
+											<li class="custom-item" value="0" @click="selectVPN">GHTND</li>
+											<li class="custom-item" value="1" @click="selectVPN">OKMJU</li>
+											<li class="custom-item" value="2" @click="selectVPN">QSDRFG</li>
+											<li class="custom-item" value="3" @click="selectVPN">UHJYRE</li>
+											<li class="custom-item" value="4" @click="selectVPN">ETHFGCT</li>
+										</ul>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
+							<th><em class="important"><i class="iconfont icon-important"></i></em>回切等待事件：</th>
+							<td colspan="3">
+								<div class="inp-wrap">
+									<div class="inp">
+										<input type="text" placeholder="请填写..." v-model.number="result.cutBack">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th><em class="important"><i class="iconfont icon-important"></i></em>倒换延迟事件：</th>
+							<td colspan="3">
+								<div class="inp-wrap">
+									<div class="inp">
+										<input type="text" placeholder="请填写..." v-model.number="result.rearrangementOfDelay">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th><em class="important"><i class="iconfont icon-important"></i></em>服务等级：</th>
+							<td colspan="3">
+								<div class="inp-wrap">
+									<div class="radio">
+										<input id="radio_1_1" name="serverRank" value="0" type="radio"
+											   v-model="result.serverRank">
+										<span class="dot"
+											  :class="{'checked' : result.serverRank === '0'}"></span>
+										<label for="radio_1_1" class="r-label">金牌服务</label>
+									</div>
+									<div class="radio">
+										<input id="radio_1_2" name="serverRank" value="1" type="radio"
+											   v-model="result.serverRank">
+										<span class="dot"
+											  :class="{'checked' : result.serverRank === '1'}"></span>
+										<label for="radio_1_2" class="r-label">银牌服务</label>
+									</div>
+									<div class="radio">
+										<input id="radio_1_3" name="serverRank" value="2" type="radio"
+											   v-model="result.serverRank">
+										<span class="dot"
+											  :class="{'checked' : result.serverRank === '2'}"></span>
+										<label for="radio_1_3" class="r-label">铜牌服务</label>
+									</div>
+									<div class="radio">
+										<input id="radio_1_4" name="serverRank" value="3" type="radio"
+											   v-model="result.serverRank">
+										<span class="dot"
+											  :class="{'checked' : result.serverRank === '3'}"></span>
+										<label for="radio_1_4" class="r-label">标准服务</label>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<!--<tr>
 							<th>
-								端口：
+								是否配置保护：
 							</th>
 							<td colspan="3">
 								<div class="inp-wrap">
@@ -129,18 +192,47 @@
 									</div>
 								</div>
 							</td>
+						</tr>-->
+						<tr>
+							<th>VPN：</th>
+							<td colspan="3">
+								<div class="inp-wrap">
+									<div class="radio">
+										<input id="radio_2_1" name="vpn" value="0" type="radio"
+											   v-model="result.vpn">
+										<span class="dot"
+											  :class="{'checked' : result.vpn === '0'}"></span>
+										<label for="radio_2_1" class="r-label">L2V</label>
+									</div>
+									<div class="radio">
+										<input id="radio_2_2" name="vpn" value="1" type="radio"
+											   v-model="result.vpn">
+										<span class="dot"
+											  :class="{'checked' : result.vpn === '1'}"></span>
+										<label for="radio_2_2" class="r-label">L3VPF</label>
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
-							<th>是否包含波长：</th>
+							<th>是否配置保护：</th>
 							<td>
-								<a class="switch" href="javascript:;" @click="result.isWaveSwitch = !result.isWaveSwitch">
-									<i :class="result.isWaveSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
+								<a class="switch" href="javascript:;" @click="result.isSetProto = !result.isSetProto">
+									<i :class="result.isSetProto ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
 								</a>
 							</td>
-							<th>是否预约：</th>
+							<th>是否重路由：</th>
 							<td>
 								<a class="switch" href="javascript:;" @click="result.isBookSwitch = !result.isBookSwitch">
 									<i :class="result.isBookSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<th>是否允许返回：</th>
+							<td>
+								<a class="switch" href="javascript:;" @click="result.isWaveSwitch = !result.isWaveSwitch">
+									<i :class="result.isWaveSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
 								</a>
 							</td>
 						</tr>
@@ -170,14 +262,16 @@
 		},
 		created() {
 	  	  	this.result = JSON.parse(sessionStorage.getItem('basicInfo')) || {
-					ywdk: '',
-					lycl: '',
-					bhlx: '0',
-					vpn: '0',
-					lylx: '0',
-					port: [],
-					isWaveSwitch: false,
-					isBookSwitch: false
+					name: '',
+					minProtoBW: '',
+					peakBW: '0',
+					cutBack: '0',
+					rearrangementOfDelay: '0',
+					serverRank: [],
+					vpn: false,
+					isSetProto: false,
+					isReRoute: false,
+					isSetBack: false
 				};
 		},
 	  	components: {
