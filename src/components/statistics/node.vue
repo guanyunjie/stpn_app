@@ -11,7 +11,7 @@
 						<input id="searchValue" type="text" @keydown.13="searchDevice" placeholder="search...">
 						<a class="search-btn" @click="searchDevice" href="javascript:;"><i class="iconfont icon-search"></i></a>
 					</div>
-					<app-loading v-show="loadState === 'loading'"></app-loading>
+					<app-loading v-show="loadState === 'loading'" :timeout="isTimeout"></app-loading>
 					<table class="custom-tab" v-show="loadState === 'loaded'">
 						<thead>
 						<tr>
@@ -19,26 +19,20 @@
 							<th width="5" class="col-sort" @click="sortByField">
 								名称 <i class="iconfont" :class="isDesc ? 'icon-desc' : 'icon-asc'"></i>
 							</th>
-							<th width="5">节点ID</th>
-							<th width="5">MASTER</th>
-							<th width="2">端口数</th>
-							<th width="4">地点</th>
-							<th width="5">H/W 版本</th>
-							<th width="10">S/W 版本</th>
-							<th width="4">保护</th>
+							<th width="5">用户标签</th>
+							<th width="5">节点类型</th>
+							<th width="5">管理状态</th>
+							<th width="10">运行状态</th>
 						</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(device, index) in page(devices)" title="点击查看详情" @click="selectTr(device.id)">
+							<tr v-for="(device, index) in page(devices)" title="点击查看详情" @click="selectTr(device.name)">
 								<td>{{pageSize * (currentNum - 1) + index + 1}}</td>
-								<td><span class="ctn" title="of:123456780abe1740">{{device.name}}</span></td>
-								<td><span class="ctn" title="of:123456780abe1740">{{device.nodeid}}</span></td>
-								<td>{{device.master}}</td>
-								<td>{{device.ports}}</td>
-								<td>{{device.site}}</td>
-								<td>{{device.hw}}</td>
-								<td><span class="ctn" :title="device.sw">{{device.sw}}</span></td>
-								<td>{{device.proto}}</td>
+								<td><span class="ctn" :title="device.name">{{device.name}}</span></td>
+								<td><span class="ctn" :title="device.userLabel">{{device.userLabel || '无'}}</span></td>
+								<td><span class="ctn" :title="device.nodeType">{{device.nodeType || '无'}}</span></td>
+								<td><span class="ctn" :title="device.adminStatus.enumeration">{{device.adminStatus.enumeration || '无'}}</span></td>
+								<td><span class="ctn" :title="device.operateStatus.enumeration">{{device.operateStatus.enumeration || '无'}}</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -136,6 +130,7 @@
 	  	  	return {
 	  	  	    title: '统计列表',
 				isDesc: true,	// 排序默认正序
+				isTimeout: false, // 是否加载超时
 				loadState: 'loading',
 	  	  	    cacheDevices: [],
 				devices: [],
@@ -166,17 +161,19 @@
 	  	    /**
 			 * 调用接口获取节点数据
 			 */
-	  	    setTimeout(() => {
-				this.$http.get('/api/statistics/devices').then((res) => {
-					let result = res.body.result;
-					this.cacheDevices = result.devices;
-					this.devices = result.devices;
-					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
-					this.loadState = 'loaded';
-					this.random = this.getRandom();
-					this.title = '统计列表：节点 共（' + this.devices.length + '条）';
-				});
-			}, 2000);
+			this.$http.get('/api/statistics/nodes').then(response => {
+				console.log(response.body);
+				this.cacheDevices = response.body;
+				this.devices = response.body;
+				this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
+				this.loadState = 'loaded';
+				this.random = this.getRandom();
+				this.title = '统计列表：节点 共（' + this.devices.length + '条）';
+			}, response => {
+				if (!response.ok) {
+					this.isTimeout = true;
+				}
+			});
 		},
 		mounted() {
 	  	    /* 默认translateZ */
@@ -255,6 +252,9 @@
 					this.random = this.getRandom();
 				}
 			},
+			/**
+			 * 根据名称排序
+			 */
 			sortByField() {
 			    this.isDesc = !this.isDesc;
 				this.devices = this.devices.reverse();

@@ -21,7 +21,7 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-
+/*
 // ================================================================================================
 var appDate = require('../data.json');
 var ywList = appDate.ywList;
@@ -99,7 +99,7 @@ apiRoutes.get('/statistics/devices', function (req, res) {
 	});
 });
 
-app.use('/api', apiRoutes);
+app.use('/api', apiRoutes);*/
 // ================================================================================================
 
 var compiler = webpack(webpackConfig)

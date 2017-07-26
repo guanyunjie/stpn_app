@@ -50,6 +50,11 @@
 				loading: false	// 登录生命周期
 			}
 		},
+		created() {
+	  	    this.$http.get('/api/topo/demo').then((res) => {
+	  	        console.log(res.body)
+			});
+		},
 		mounted() {
 	  	    /* 定时动画 */
 	  	  	setInterval(() => {
@@ -89,7 +94,7 @@
 			        this.loading = false;
 			        location.href = '#/';
 					this.emit.$emit('sign', true);
-				}, 2000);
+				}, 1000);
 			}
 		}
 	}
