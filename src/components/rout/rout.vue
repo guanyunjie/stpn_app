@@ -151,11 +151,11 @@
 				progressiveThreshold: 0
 			});
 			eChartsInstance.showLoading();
-			this.$http.get('/api/nodes').then((res) => {
+			this.$http.get('/api/statistics/topoData').then(response => {
 				eChartsInstance.hideLoading();
-				let result = res.body.result;
-				for (let i = 0; i < result.length; i++) {
-					let item = result[i];
+				let nodes = response.body.nodes;
+				for (let i = 0; i < nodes.length; i++) {
+					let item = nodes[i];
 					let obj = {
 						name: item.id,
 						value: item.name,
@@ -173,18 +173,17 @@
 						data: this.nodes
 					}]
 				});
-			});
-			this.$http.get('/api/links').then((res) => {
-			  	let result = res.body.result;
-			  	for (let i = 0; i < result.length; i++) {
-			  	  	let item = result[i];
-			  	  	let link = {
-			  	  	  	source: item.source,
-						target: item.target,
-						value: item.value,
+
+				let links = response.body.links;
+				for (let i = 0; i < links.length; i++) {
+					let item = links[i];
+					let link = {
+						source: item.leftNodeId,
+						target: item.rightNodeId,
+						value: 'aaa',
 						lineStyle: {
-			  	  	  	  	normal: {
-			  	  	  	  	  	color: 'rgb(91, 153, 210)',
+							normal: {
+								color: 'rgb(91, 153, 210)',
 								width: 2
 							}
 						}

@@ -15,39 +15,8 @@
 			</div>
 			<div class="drag-line" @mousedown.left="isDragDown = true"></div>
 			<div id="panel" class="panel">
-				<h4 class="title">已选节点</h4>
-				<div class="own-node-wrap">
-					<div class="own-node">
-						<span v-for="node in selectedNodes" class="node-item">
-							{{node}}
-							<em @click="removeNode(node)">&times;</em>
-						</span>
-					</div>
-				</div>
-				<h4 class="title">配置tunnel</h4>
-				<div class="set-tunnel">
-					<table class="tab">
-						<thead>
-							<tr>
-								<th>名称</th>
-								<th>源节点</th>
-								<th>宿节点</th>
-								<th>保护方式</th>
-								<th>包含排斥</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="tunnel in tunnelInfo">
-								<td>{{tunnel.name}}</td>
-								<td>{{tunnel.source}}</td>
-								<td>{{tunnel.target}}</td>
-								<td>{{tunnel.protoType}}</td>
-								<td>{{tunnel.isBH}}</td>
-								<td>&times;</td>
-							</tr>
-						</tbody>
-					</table>
+				<div id="selectArea">
+
 				</div>
 				<router-link class="btn-step" activeClass="btn-active" to="/business/create">
 					上一步
@@ -64,6 +33,7 @@
 	import title from '../common/title.vue';
 	import paragraph from '../common/paragraph.vue';
 	import rout from '../rout/rout.vue';
+	import eCharts from 'echarts';
 
 	export default {
 	  	data() {
@@ -75,7 +45,9 @@
 				isDragDown: false
 			}
 		},
-		created() {},
+		created() {
+
+		},
 		mounted() {
 			let menuHeight = document.getElementById('menu').clientHeight;
 			let titleHeight = document.getElementById('sptnTitle').clientHeight;
@@ -93,6 +65,56 @@
 	  	  	document.addEventListener('mouseup', (e) => {
 	  	  	  	this.isDragDown = false;
 	  	  	  	// 重绘拓扑图
+			});
+
+	  	  	let eChartsInstance = eCharts.init(document.getElementById('selectArea'), {}, {width: 800, height: 800});
+			eChartsInstance.setOption({
+				title: {
+					top: 'top',
+					left: 'left',
+					padding: [10, 30]
+				},
+				backgroundColor: '#eee',
+				animation: false,
+				series: [
+					{
+						type: 'graph',
+						name: 'OTN',
+						layout: 'force',
+						nodes: [
+							{
+								itemStyle: {
+									normal: {
+										borderColor: '#000',
+										borderWidth: 2
+									}
+								}
+							}
+						],
+						links: [],
+						roam: true,
+						draggable: true,
+						label: {
+							normal: {
+								position: 'right'
+							}
+						},
+						force: {
+							repulsion: 100
+						}
+					}
+				]
+			});
+
+			this.$http.get('/api/statistics/topoData').then(response => {
+				for (let i = 0; i < 5; i++) {
+					this.selectedNodes.push(response.body.nodes[i]);
+				}
+				eChartsInstance.setOption({
+					series: [{
+						nodes: this.selectedNodes
+					}]
+				})
 			});
 		},
 	  	components: {

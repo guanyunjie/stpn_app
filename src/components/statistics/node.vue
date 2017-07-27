@@ -168,7 +168,7 @@
 				this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
 				this.loadState = 'loaded';
 				this.random = this.getRandom();
-				this.title = '统计列表：节点 共（' + this.devices.length + '条）';
+				this.title = '统计列表：节点 共' + this.devices.length + '条';
 			}, response => {
 				if (!response.ok) {
 					this.isTimeout = true;
@@ -247,7 +247,7 @@
 					this.pageTotalNum = Math.ceil(this.devices.length / this.pageSize);
 					this.title = '统计列表：搜索“' + searchValue + '”的结果共有' + this.devices.length + '条';
 					if (searchValue.length === 0) {
-						this.title = '统计列表：节点 共（' + this.devices.length + '条）';
+						this.title = '统计列表：节点 共' + this.devices.length + '条';
 					}
 					this.random = this.getRandom();
 				}

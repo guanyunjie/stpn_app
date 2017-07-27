@@ -46,14 +46,23 @@
         display inline-block
         position relative
         cursor pointer
-        line-height 20px
-        width 20%
+        margin-right 20px
         .r-label, .c-label
             position relative
-            padding-left 10px
-            line-height 20px
+            padding 0 25px
+            color #000
+            font-size 12px
+            font-weight bold
+            background #ccc
+            border-radius 5px
+            line-height 23px
             display inline-block
             cursor pointer
+            .iconfont
+                position absolute
+                top 2px
+                right 4px
+                color #3F51B5
         input[type=radio], input[type=checkbox]
             position relative
             z-index 89
@@ -62,20 +71,7 @@
             height 18px
             width 18px
             opacity 0
-        .dot
-            position absolute
-            top 0px
-            left 0px
-            display inline-block
-            padding 8px
-            border 1px solid #969696
-            background #fff
-        .checked::after
-            position absolute
-            color #969696
     .checkbox
-        .dot
-            border-radius 3px
         .checked::after
             content '✔'
             top -1px
@@ -83,19 +79,9 @@
             font-size 16px
             font-weight bold
     .radio
-        .dot
-            border-radius 99px
-        .checked::after
-            content ' '
-            width 10px
-            height 10px
-            border-radius 50px
-            position absolute
-            top 3px
-            background #969696
-            text-shadow 0
-            left 3px
-            font-size 32px
+        .checked
+            color #fff
+            background #ea5c2f
 
 .switch
     display block

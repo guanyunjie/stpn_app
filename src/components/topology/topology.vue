@@ -7,7 +7,7 @@
 		<div class="s-topology">
 			<app-rout :nodeChecked="nodeChecked"
 					  :linkChecked="linkChecked"
-					  :size="{width: 1100, height: 800}"
+					  :size="{width: size.width, height: size.height}"
 					  :selectedNodes="[selectedNode.id]"></app-rout>
 			<div class="panel" v-show="selectedNode.name || selectedNode.value">
 				<h2><img :src="selectedNode.name ? './static/svg/normal/eth.svg' : './static/svg/normal/odu.svg'" alt="">属性面板</h2>
@@ -50,23 +50,32 @@
 
 	export default {
 	  	data() {
-	  	  	let _this = this;
 	  	  	return {
 				selectedNode: {},
-				nodeChecked(id) {
-				  	_this.$http.get('/api/node/' + id).then((res) => {
-						_this.selectedNode = res.body.result;
-					});
+				size: {
+				    width: 0,
+					height: 0
 				},
-				data: {},
-				linkChecked(id) {
-					_this.$http.get('/api/link/' + id).then((res) => {
-						_this.selectedNode = res.body.result;
-					});
-				}
+				data: {}
 			}
 		},
-		mounted() {},
+		created() {},
+		mounted() {
+	  	    this.size.width = document.getElementById('mainArea').clientWidth;
+	  	    this.size.height = document.getElementById('mainArea').clientHeight;
+		},
+		methods: {
+			nodeChecked(id) {
+				this.$http.get('/api/node/' + id).then((res) => {
+					this.selectedNode = res.body.result;
+				});
+			},
+			linkChecked(id) {
+				this.$http.get('/api/link/' + id).then((res) => {
+					this.selectedNode = res.body.result;
+				});
+			}
+		},
 		components: {
 	  	  	'app-title': title,
 			'app-rout': rout
@@ -78,13 +87,11 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.topology
 		.s-topology
-			width 88%
-			margin 20px auto
+			width 100%
 			background #fff
 			position relative
 			height 100%
 			flex-wrap wrap
-			border 1px solid #000
 			overflow hidden
 			.t-area
 				height 100%

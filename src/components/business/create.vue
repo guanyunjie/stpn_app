@@ -30,18 +30,18 @@
 							<td colspan="2">
 								<div class="inp-wrap">
 									<div class="inp" style="width: 96%"
-										 @mouseenter="isSelectOpen1 = true"
-										 @mouseleave="isSelectOpen1 = false">
+										 @mouseenter="isSelectOpen1_1 = true"
+										 @mouseleave="isSelectOpen1_1 = false">
 										<label class="custom-select">
-											<span>{{bhlxHtml}}</span>
+											<span v-text="cirText"></span>
 											<i class="iconfont"
-											   :class="isSelectOpen1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+											   :class="isSelectOpen1_1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
-										<ul class="custom-ul" v-show="isSelectOpen1">
-											<li class="custom-item" value="0" @click="selectBHLX">1+1保护</li>
-											<li class="custom-item" value="1" @click="selectBHLX">1+2保护</li>
-											<li class="custom-item" value="2" @click="selectBHLX">2+1保护</li>
-											<li class="custom-item" value="3" @click="selectBHLX">2+2保护</li>
+										<ul class="custom-ul" v-show="isSelectOpen1_1">
+											<li class="custom-item" value="0" @click="selectBHLX">0~20M</li>
+											<li class="custom-item" value="1" @click="selectBHLX">21~50M</li>
+											<li class="custom-item" value="2" @click="selectBHLX">51~100M</li>
+											<li class="custom-item" value="3" @click="selectBHLX">101~1000M</li>
 										</ul>
 									</div>
 								</div>
@@ -49,19 +49,14 @@
 							<td>
 								<div class="inp-wrap">
 									<div class="inp"
-										 @mouseenter="isSelectOpen2 = true"
-										 @mouseleave="isSelectOpen2 = false">
+										 @mouseenter="isSelectOpen1_2 = true"
+										 @mouseleave="isSelectOpen1_2 = false">
 										<label class="custom-select">
 											<span>{{vpnHTML}}</span>
 											<i class="iconfont"
-											   :class="isSelectOpen2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+											   :class="isSelectOpen1_2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
-										<ul class="custom-ul" v-show="isSelectOpen2">
-											<li class="custom-item" value="0" @click="selectVPN">GHTND</li>
-											<li class="custom-item" value="1" @click="selectVPN">OKMJU</li>
-											<li class="custom-item" value="2" @click="selectVPN">QSDRFG</li>
-											<li class="custom-item" value="3" @click="selectVPN">UHJYRE</li>
-											<li class="custom-item" value="4" @click="selectVPN">ETHFGCT</li>
+										<ul class="custom-ul" v-show="isSelectOpen1_2">
 										</ul>
 									</div>
 								</div>
@@ -72,18 +67,18 @@
 							<td colspan="2">
 								<div class="inp-wrap">
 									<div class="inp" style="width: 96%"
-										 @mouseenter="isSelectOpen1 = true"
-										 @mouseleave="isSelectOpen1 = false">
+										 @mouseenter="isSelectOpen2_1 = true"
+										 @mouseleave="isSelectOpen2_1 = false">
 										<label class="custom-select">
-											<span>{{bhlxHtml}}</span>
+											<span v-text="pirText"></span>
 											<i class="iconfont"
-											   :class="isSelectOpen1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+											   :class="isSelectOpen2_1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
-										<ul class="custom-ul" v-show="isSelectOpen1">
-											<li class="custom-item" value="0" @click="selectBHLX">1+1保护</li>
-											<li class="custom-item" value="1" @click="selectBHLX">1+2保护</li>
-											<li class="custom-item" value="2" @click="selectBHLX">2+1保护</li>
-											<li class="custom-item" value="3" @click="selectBHLX">2+2保护</li>
+										<ul class="custom-ul" v-show="isSelectOpen2_1">
+											<li class="custom-item" value="0" @click="selectBHLX">0~20M</li>
+											<li class="custom-item" value="1" @click="selectBHLX">21~50M</li>
+											<li class="custom-item" value="2" @click="selectBHLX">51~100M</li>
+											<li class="custom-item" value="3" @click="selectBHLX">101~1000M</li>
 										</ul>
 									</div>
 								</div>
@@ -91,14 +86,14 @@
 							<td>
 								<div class="inp-wrap">
 									<div class="inp"
-										 @mouseenter="isSelectOpen2 = true"
-										 @mouseleave="isSelectOpen2 = false">
+										 @mouseenter="isSelectOpen2_2 = true"
+										 @mouseleave="isSelectOpen2_2 = false">
 										<label class="custom-select">
 											<span>{{vpnHTML}}</span>
 											<i class="iconfont"
-											   :class="isSelectOpen2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+											   :class="isSelectOpen2_2 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
 										</label>
-										<ul class="custom-ul" v-show="isSelectOpen2">
+										<ul class="custom-ul" v-show="isSelectOpen2_2">
 											<li class="custom-item" value="0" @click="selectVPN">GHTND</li>
 											<li class="custom-item" value="1" @click="selectVPN">OKMJU</li>
 											<li class="custom-item" value="2" @click="selectVPN">QSDRFG</li>
@@ -110,26 +105,26 @@
 							</td>
 						</tr>
 						<tr>
-							<th><em class="important"><i class="iconfont icon-important"></i></em>回切等待事件：</th>
+							<th><em class="important"><i class="iconfont icon-important"></i></em>回切等待时间：</th>
 							<td colspan="3">
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text" placeholder="请填写..." v-model.number="result.cutBack">
+										<input type="text" placeholder="请填写..." v-model.number="result.wtr">
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th><em class="important"><i class="iconfont icon-important"></i></em>倒换延迟事件：</th>
+							<th><em class="important"><i class="iconfont icon-important"></i></em>倒换延迟时间：</th>
 							<td colspan="3">
 								<div class="inp-wrap">
 									<div class="inp">
-										<input type="text" placeholder="请填写..." v-model.number="result.rearrangementOfDelay">
+										<input type="text" placeholder="请填写..." v-model.number="result.holdOffTime">
 									</div>
 								</div>
 							</td>
 						</tr>
-						<tr>
+						<!--<tr>
 							<th><em class="important"><i class="iconfont icon-important"></i></em>服务等级：</th>
 							<td colspan="3">
 								<div class="inp-wrap">
@@ -163,7 +158,7 @@
 									</div>
 								</div>
 							</td>
-						</tr>
+						</tr>-->
 						<!--<tr>
 							<th>
 								是否配置保护：
@@ -199,40 +194,48 @@
 								<div class="inp-wrap">
 									<div class="radio">
 										<input id="radio_2_1" name="vpn" value="0" type="radio"
-											   v-model="result.vpn">
-										<span class="dot"
-											  :class="{'checked' : result.vpn === '0'}"></span>
-										<label for="radio_2_1" class="r-label">L2V</label>
+											   v-model="result.vpnType">
+										<label for="radio_2_1" class="r-label" :class="{'checked': result.vpnType == 0}">
+											L2VPN <i class="iconfont icon-gou" v-if="result.vpnType == 0"></i>
+										</label>
 									</div>
 									<div class="radio">
 										<input id="radio_2_2" name="vpn" value="1" type="radio"
-											   v-model="result.vpn">
-										<span class="dot"
-											  :class="{'checked' : result.vpn === '1'}"></span>
-										<label for="radio_2_2" class="r-label">L3VPF</label>
+											   v-model="result.vpnType">
+										<label for="radio_2_2" class="r-label" :class="{'checked': result.vpnType == 1}">
+											L3VPN <i class="iconfont icon-gou" v-if="result.vpnType == 1"></i>
+										</label>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th>是否配置保护：</th>
-							<td>
-								<a class="switch" href="javascript:;" @click="result.isSetProto = !result.isSetProto">
-									<i :class="result.isSetProto ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
-								</a>
-							</td>
-							<th>是否重路由：</th>
-							<td>
-								<a class="switch" href="javascript:;" @click="result.isBookSwitch = !result.isBookSwitch">
-									<i :class="result.isBookSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
-								</a>
+							<th>保护类型：</th>
+							<td colspan="2">
+								<div class="inp-wrap">
+									<div class="inp" style="width: 96%"
+										 @mouseenter="isSelectOpen3_1 = true"
+										 @mouseleave="isSelectOpen3_1 = false">
+										<label class="custom-select">
+											<span>{{bhlxHtml}}</span>
+											<i class="iconfont"
+											   :class="isSelectOpen3_1 ? 'icon-arrow-bottom' : 'icon-arrow-left'"></i>
+										</label>
+										<ul class="custom-ul" v-show="isSelectOpen3_1">
+											<li class="custom-item" value="0" @click="selectBHLX">1+1保护</li>
+											<li class="custom-item" value="1" @click="selectBHLX">1+2保护</li>
+											<li class="custom-item" value="2" @click="selectBHLX">2+1保护</li>
+											<li class="custom-item" value="3" @click="selectBHLX">2+2保护</li>
+										</ul>
+									</div>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<th>是否允许返回：</th>
 							<td>
-								<a class="switch" href="javascript:;" @click="result.isWaveSwitch = !result.isWaveSwitch">
-									<i :class="result.isWaveSwitch ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
+								<a class="switch" href="javascript:;" @click="result.revertiveMode = !result.revertiveMode">
+									<i :class="result.revertiveMode ? 'icon-switch-on' : 'icon-switch-off'" class="iconfont icon-switch-on"></i>
 								</a>
 							</td>
 						</tr>
@@ -254,10 +257,14 @@
 	  	data() {
 	  	  	return {
 	  	  	  	result: {},
-	  	  	  	isSelectOpen1: false,
-				isSelectOpen2: false,
-				bhlxHtml: '1+1保护',
-				vpnHTML: 'GHTND'
+	  	  	  	isSelectOpen1_1: false,
+				isSelectOpen1_2: false,
+				isSelectOpen2_1: false,
+				isSelectOpen2_2: false,
+				isSelectOpen3_1: false,
+				cirText: '0~20M',
+				pirText: '0~20M',
+				lptText: 'aaaa'
 			}
 		},
 		created() {
@@ -268,7 +275,7 @@
 					cutBack: '0',
 					rearrangementOfDelay: '0',
 					serverRank: [],
-					vpn: false,
+					vpnType: 0,
 					isSetProto: false,
 					isReRoute: false,
 					isSetBack: false
@@ -376,60 +383,6 @@
 											&:hover
 												cursor pointer
 												background #ccc
-								.checkbox, .radio
-									display inline-block
-									position relative
-									cursor pointer
-									line-height 20px
-									width 20%
-									.r-label, .c-label
-										position relative
-										padding-left 10px
-										line-height 20px
-										display inline-block
-										cursor pointer
-									input[type=radio], input[type=checkbox]
-										position relative
-										z-index 89
-										float left
-										cursor pointer
-										height 18px
-										width 18px
-										opacity 0
-									.dot
-										position absolute
-										top 0px
-										left 0px
-										display inline-block
-										padding 8px
-										border 1px solid #969696
-										background #fff
-									.checked::after
-										position absolute
-										color #969696
-								.checkbox
-									.dot
-										border-radius 3px
-									.checked::after
-										content '✔'
-										top -1px
-										left 1px
-										font-size 16px
-										font-weight bold
-								.radio
-									.dot
-										border-radius 99px
-									.checked::after
-										content ' '
-										width 10px
-										height 10px
-										border-radius 50px
-										position absolute
-										top 3px
-										background #969696
-										text-shadow 0
-										left 3px
-										font-size 32px
 
 
 			.step-next
