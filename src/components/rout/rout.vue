@@ -154,7 +154,7 @@
 			this.$http.get('/api/statistics/topoData').then(response => {
 				eChartsInstance.hideLoading();
 				let nodes = response.body.nodes;
-				for (let i = 0; i < nodes.length; i++) {
+				for (let i = 0; i < 20; i++) {
 					let item = nodes[i];
 					let obj = {
 						name: item.id,
@@ -224,7 +224,6 @@
 		},
 		watch: {
 			selectedNodes(now) {
-			  	console.log(now)
 				this.nodes.forEach((node) => {
 					node.symbol = this.getSvgPath(nodeBackgrounds[node.category], now.includes(node.name) ? 'selected' : 'normal');
 				});

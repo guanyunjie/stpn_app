@@ -13,17 +13,39 @@
 
 				</app-rout>
 			</div>
-			<div class="drag-line" @mousedown.left="isDragDown = true"></div>
-			<div id="panel" class="panel">
-				<div id="selectArea">
-
+			<div class="drag-line">
+				<div class="drag-icon" @mousedown.left="isDragDown = true">
+					<i class="iconfont icon-drag"></i>
 				</div>
-				<router-link class="btn-step" activeClass="btn-active" to="/business/create">
+			</div>
+			<div id="panel" class="panel">
+				<div id="selectArea" ref="selectArea" @click="clickBlank"></div>
+				<div class="tunnels-panel" :style="{'width': panelWidth + 'px'}">
+					<div class="tunnels-panel-wrap">
+						<table class="custom-tab lucency" v-show="tunnels.length > 0">
+							<thead>
+								<tr>
+									<th>源节点</th>
+									<th>宿节点</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="item in tunnels">
+									<td><span class="ctn">{{item.source}}</span></td>
+									<td><span class="ctn">{{item.target}}</span></td>
+									<td>x</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--<router-link class="btn-step" activeClass="btn-active" to="/business/create">
 					上一步
 				</router-link>
 				<router-link class="btn-step" activeClass="btn-active" to="/business/create/port">
 					下一步
-				</router-link>
+				</router-link>-->
 			</div>
 		</div>
 	</div>
@@ -39,14 +61,25 @@
 	  	data() {
 	  	  	return {
 	  	  	  	selectedNodes: [],
+				tunnels: [],
+				tunnelOperation: [],
 				tunnelInfo: [],
-				routWidth: 800,
+				routWidth: 0,
 				routHeight: 0,
-				isDragDown: false
+				selectAreaWidth: 0,
+				selectAreaHeight: 0,
+				panelWidth: 300,
+				isDragDown: false,
+				isClickElement: false
 			}
 		},
 		created() {
-
+			let mainAreaWidth = document.getElementById('mainArea').clientWidth;
+			let mainAreaHeight = document.getElementById('mainArea').clientHeight;
+			this.routWidth = mainAreaWidth * 0.7;
+			this.routHeight = mainAreaHeight - 45;
+			this.selectAreaWidth = mainAreaWidth * 0.3;
+			this.selectAreaHeight = mainAreaHeight - 45;
 		},
 		mounted() {
 			let menuHeight = document.getElementById('menu').clientHeight;
@@ -55,42 +88,140 @@
 			// 为panel div设置高度。铺满屏幕
 			document.getElementById('panel').style.height = this.routHeight + 'px';
 			// 添加拖拽事件。缩放拓扑图
-	  	  	document.addEventListener('mousemove', (e) => {
+	  	  	document.addEventListener('mousemove', e => {
 	  	  	  	if (this.isDragDown && e.which === 1) {
 	  	  	  	  	let menuWidth = document.getElementById('menu').clientWidth;
-					console.log(menuWidth);
+	  	  	  	  	// 路由宽度
 	  	  	  	  	this.routWidth = e.x - menuWidth;
+	  	  	  	  	// 已选节点面板宽度
+	  	  	  	  	this.selectAreaWidth = document.getElementById('mainArea').clientWidth - this.routWidth;
 				}
 			});
 	  	  	document.addEventListener('mouseup', (e) => {
 	  	  	  	this.isDragDown = false;
 	  	  	  	// 重绘拓扑图
 			});
+	  	  	let eChartsInstance = eCharts.init(this.$refs['selectArea'], {}, {width: this.selectAreaWidth, height: this.selectAreaHeight});
+			eChartsInstance.on('click', (params) => {
+				if (params.componentType === 'series' && params.seriesType === 'graph') {
+					this.isClickElement = true;
+					if (params.dataType === 'node') {
+						let selectItem = this.selectedNodes.filter((item) => {
+						    return this.tunnelOperation.includes(item.name);
+						});
+						let isSameNode = false;
+						this.selectedNodes.forEach((item) => {
+						    if (selectItem.length === 0) {
+								if (item.name === params.data.name) {
+									item.itemStyle = {
+									    normal: {
+									       	borderColor: '#795548',
+											borderWidth: 2,
+											borderType: 'solid',
+											shadowBlur: 10,
+											shadowColor: '#795548'
+										}
+									};
+									this.tunnelOperation.push(item.name)
+								}
+							} else if (selectItem.length === 1) {
+						        // 两次点击的为同一点
+						        if (params.data.name === selectItem[0].name) {
+									isSameNode = true;
+									return false;
+								}
+								if (selectItem[0].name === item.name) {
+									// 去除将要建立隧道源节点的样式。
+									item.itemStyle = {
+										normal: {}
+									};
+									this.tunnelOperation.length = 0;
 
-	  	  	let eChartsInstance = eCharts.init(document.getElementById('selectArea'), {}, {width: 800, height: 800});
-			eChartsInstance.setOption({
+									// 避免重复建立已经存在的链路
+									let isExit = false;
+									this.tunnels.forEach(tunnel => {
+									    if (tunnel.source === item.name && tunnel.target === params.data.name) {
+											isExit = true;
+											return false;
+										}
+									});
+									if (!isExit) {
+										this.tunnels.push({
+											source: item.name,
+											target: params.data.name,
+											value: Math.floor(Math.random() * 10),
+											symbol: ['none', 'arrow'],
+											symbolSize: [0, 15],
+											lineStyle: {
+												normal: {
+													color: '#FF5722',
+													width: 3,
+													type: 'dotted'
+												}
+											}
+										});
+									}
+
+									// 两个节点之间只能有一条隧道 删除源宿节点相反的隧道
+									let temp = [];
+									this.tunnels.forEach(tunnel => {
+										if (tunnel.source === params.data.name && tunnel.target === item.name) {
+											// fsefsef
+										} else {
+											temp.push(tunnel);
+										}
+									});
+									this.tunnels = temp;
+								}
+							}
+						});
+						if (!isSameNode) {
+							eChartsInstance.setOption({
+								series: [{
+									nodes: this.selectedNodes,
+									links: this.tunnels
+								}]
+							});
+						}
+					} else if (params.dataType === 'edge') {
+						if (params.event.event.altKey || params.event.event.ctrlKey) {
+						    let temp = [];
+							this.tunnels.forEach(tunnel => {
+							   	if (tunnel.source === params.data.source && tunnel.target === params.data.target) {
+									// 删除元素有Bug 先这么写着吧
+								} else {
+							   	    temp.push(tunnel);
+								}
+							});
+							this.tunnels = temp;
+							eChartsInstance.setOption({
+								series: [{
+									nodes: this.selectedNodes,
+									links: this.tunnels
+								}]
+							});
+						}
+					}
+				}
+			});
+	  	  	eChartsInstance.setOption({
 				title: {
 					top: 'top',
 					left: 'left',
-					padding: [10, 30]
+					text: '已选择节点',
+					padding: [10, 30],
+					subtext: '按住ctrl/alt点击隧道可移除。'
 				},
-				backgroundColor: '#eee',
+				backgroundColor: '#fff',
 				animation: false,
+				symbol: 'roundRect',
+				symbolSize: 15,
 				series: [
 					{
 						type: 'graph',
 						name: 'OTN',
-						layout: 'force',
-						nodes: [
-							{
-								itemStyle: {
-									normal: {
-										borderColor: '#000',
-										borderWidth: 2
-									}
-								}
-							}
-						],
+						layout: 'circular',
+						nodes: [],
 						links: [],
 						roam: true,
 						draggable: true,
@@ -107,8 +238,22 @@
 			});
 
 			this.$http.get('/api/statistics/topoData').then(response => {
-				for (let i = 0; i < 5; i++) {
-					this.selectedNodes.push(response.body.nodes[i]);
+			    let temp = [];
+				for (let i = 0; i < 7; i++) {
+					temp.push(response.body.nodes[i]);
+				}
+				for (let i = 0; i < temp.length; i++) {
+					let item = temp[i];
+					let obj = {
+						name: item.id,
+						value: item.name,
+						x: Math.floor(Math.random() * 100),
+						y: Math.floor(Math.random() * 100),
+						symbolSize: 50,
+						symbol: 'roundRect',
+						itemStyle: {}
+					}
+					this.selectedNodes.push(obj);
 				}
 				eChartsInstance.setOption({
 					series: [{
@@ -123,32 +268,46 @@
 			'app-paragraph': paragraph
 		},
 		methods: {
+			clickBlank() {
+			    if (this.isClickElement) {
+			        // nothing to do
+				} else {
+			        // 点击空白去除节点选中效果
+					if (this.tunnelOperation.length === 1) {
+						this.selectedNodes.forEach(item => {
+							if (item.name === this.tunnelOperation[0]) {
+								item.itemStyle = {
+									normal: {}
+								};
+								this.tunnelOperation = [];
+								return false;
+							}
+						});
+						eCharts.getInstanceByDom(this.$refs['selectArea']).setOption({
+							series: [{
+								nodes: this.selectedNodes,
+								links: this.tunnels
+							}]
+						});
+					}
+				}
+				this.isClickElement = false;
+			},
 			nodeChecked(id) {
 				if (!this.selectedNodes.includes(id)) {
 					this.selectedNodes.push(id);
 				}
-			},
-			linkChecked(id) {},
-			removeNode(node) {
-			  	this.selectedNodes.forEach((item, index) => {
-			  	  	if (item === node) {
-						this.selectedNodes.splice(index, 1);
-					}
-				})
-			},
-			suofang() {
-			  	console.log(this.routWidth)
-				document.getElementById('routArea').style.width = this.routWidth;
-			  	if (this.routWidth === 800) {
-			  	  	this.routWidth = 600;
-				} else {
-			  	  	this.routWidth = 800;
-				}
 			}
 		},
 		watch: {
-			selectedNodes(now) {
-			  	this.tunnelInfo = [];
+			'selectAreaWidth'(now) {
+			   	if (now > 750) {
+					this.panelWidth = now * 0.4;
+				}
+				eCharts.getInstanceByDom(this.$refs['selectArea']).resize({width: now});
+			},
+			'selectedNodes'(now) {
+			  	/* this.tunnelInfo = [];
 				now.forEach((item) => {
 				  	let tunnel = {
 				  	  	name: item,
@@ -158,7 +317,7 @@
 						isBH: '排斥'
 					}
 					this.tunnelInfo.push(tunnel);
-				});
+				}); */
 			}
 		},
 		beforeRouteLeave(to, from, next) {
@@ -189,9 +348,23 @@
 				position inherit
 				border-right 1px solid #ccc
 			.drag-line
-				width 5px
+				width 1px
+				position relative
 				background #ccc
-				cursor e-resize
+				z-index 999
+				.drag-icon
+					position: absolute
+					top: 50%
+					left: 50%
+					cursor e-resize
+					margin-left: -16px
+					background: rgba(47, 46, 46, 0.74)
+					color: #FFC107
+					line-height: 18px
+					width: 32px
+					border-radius: 4px
+					.iconfont
+						font-size 18px
 			.panel
 				flex auto
 				height 100%
@@ -204,6 +377,11 @@
 					text-align left
 					padding-left 20px
 					color #fff
+				.tunnels-panel
+					position absolute
+					top 100px
+					right 30px
+					min-height 300px
 				.set-tunnel
 					overflow-y hidden
 					overflow-x scroll
