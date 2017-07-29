@@ -25,28 +25,37 @@
 						<table class="custom-tab lucency" v-show="tunnels.length > 0">
 							<thead>
 								<tr>
-									<th>源节点</th>
-									<th>宿节点</th>
-									<th>操作</th>
+									<th width="1">序号</th>
+									<th width="3">源节点</th>
+									<th width="3">宿节点</th>
+									<th width="1">操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="item in tunnels">
+								<tr v-for="(item, index) in tunnels">
+									<td>{{index + 1}}</td>
 									<td><span class="ctn">{{item.source}}</span></td>
 									<td><span class="ctn">{{item.target}}</span></td>
-									<td>x</td>
+									<td>
+										<em class="opr-item" title="定位" @click="positionTunnel(item.source, item.target, $event)">
+											<i class="iconfont icon-position"></i>
+										</em>
+										<em class="opr-item" title="删除" @click="removeTunnel(item.source, item.target, $event)">
+											<i class="iconfont icon-remove"></i>
+										</em>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
-				<!--<router-link class="btn-step" activeClass="btn-active" to="/business/create">
-					上一步
-				</router-link>
-				<router-link class="btn-step" activeClass="btn-active" to="/business/create/port">
-					下一步
-				</router-link>-->
 			</div>
+			<router-link class="tunnel-prev" activeClass="tunnel-active" to="/business/create">
+				<i class="iconfont icon-arrow-left"></i>
+			</router-link>
+			<router-link class="tunnel-next" activeClass="tunnel-active" to="/business/create/port">
+				<i class="iconfont icon-arrow-right"></i>
+			</router-link>
 		</div>
 	</div>
 </template>
@@ -56,7 +65,36 @@
 	import paragraph from '../common/paragraph.vue';
 	import rout from '../rout/rout.vue';
 	import eCharts from 'echarts';
+	const STYLE = {
+	    nodeNormalStyle: {},
+		nodeCheckedStyle: {
+			normal: {
+				borderColor: '#795548',
+				borderWidth: 2,
+				borderType: 'solid',
+				shadowBlur: 10,
+				shadowColor: '#795548'
+			}
+		},
+		tunnelNormalStyle: {
+		    normal: {
+				color: '#FF5722',
+				type: 'dotted',
+				width: 3
+			}
+		},
+		tunnelCheckedStyle: {
+			normal: {
+				color: '#FF5722',
+				type: 'dotted',
+				width: 3,
+				shadowColor: 'red',
+				shadowBlur: 5
+			}
+		}
+	};
 
+	let $ = window.jQuery = window.$ = require('jquery');
 	export default {
 	  	data() {
 	  	  	return {
@@ -259,7 +297,7 @@
 					series: [{
 						nodes: this.selectedNodes
 					}]
-				})
+				});
 			});
 		},
 	  	components: {
@@ -297,6 +335,47 @@
 				if (!this.selectedNodes.includes(id)) {
 					this.selectedNodes.push(id);
 				}
+			},
+			positionTunnel(source, target, e) {
+			    if ($(e.target).closest('.opr-item').hasClass('position')) {
+					$(e.target).closest('.opr-item').removeClass('position');
+					this.tunnels.forEach(item => {
+						if (item.source === source && item.target === target) {
+						    item.lineStyle = STYLE.tunnelNormalStyle;
+						}
+					});
+					eCharts.getInstanceByDom(this.$refs['selectArea']).setOption({
+						series: [{
+							links: this.tunnels
+						}]
+					});
+				} else {
+			        $(e.target).closest('.opr-item').addClass('position');
+			        this.tunnels.forEach(item => {
+			           	 if (item.source === source && item.target === target) {
+			           	     item.lineStyle = STYLE.tunnelCheckedStyle;
+						 }
+					});
+					eCharts.getInstanceByDom(this.$refs['selectArea']).setOption({
+						series: [{
+							links: this.tunnels
+						}]
+					});
+				}
+			},
+			removeTunnel(source, target, e) {
+			    let temp = [];
+			    this.tunnels.forEach(item => {
+			       	if (item.source !== source || item.target !== target) {
+			       	    temp.push(item);
+					}
+				});
+			    this.tunnels = temp;
+				eCharts.getInstanceByDom(this.$refs['selectArea']).setOption({
+					series: [{
+						links: this.tunnels
+					}]
+				});
 			}
 		},
 		watch: {
@@ -381,7 +460,9 @@
 					position absolute
 					top 100px
 					right 30px
-					min-height 300px
+					min-width 300px
+					max-height 490px
+					overflow-y scroll
 				.set-tunnel
 					overflow-y hidden
 					overflow-x scroll
@@ -439,4 +520,18 @@
 							position absolute
 							&:hover
 								color #fb9494
+			.tunnel-prev, .tunnel-next
+				background green
+				width 50px
+				height 100px
+				line-height 100px
+				position absolute
+				margin-top -50px
+			.tunnel-prev
+				top 50%
+				left 0
+			.tunnel-next
+				top 50%
+				right 0
+
 </style>

@@ -26,7 +26,7 @@
 						</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(device, index) in page(devices)" title="点击查看详情" @click="selectTr(device.name)">
+							<tr v-for="(device, index) in page(devices)" title="点击查看详情" @click="selectTr(device.id)">
 								<td>{{pageSize * (currentNum - 1) + index + 1}}</td>
 								<td><span class="ctn" :title="device.name">{{device.name}}</span></td>
 								<td><span class="ctn" :title="device.userLabel">{{device.userLabel || '无'}}</span></td>
@@ -198,6 +198,9 @@
 	  	  	  	// 监听高度
 	  	  	  	this.rotateHeight = panelHeight + 50;
 	  	  	  	this.isBackShow = true;
+	  	  	  	this.$http.get('/api/statistics/node?id=' + id).then(response => {
+	  	  	  	   	console.log(response);
+				});
 			},
 			/**
 			 * 点击back 图标事件

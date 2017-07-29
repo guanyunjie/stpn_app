@@ -163,8 +163,22 @@
         background rgba(179, 179, 179, 0.69)
     tbody
         tr
-            cursor pointer
+            cursor default
             height 44px
+            .opr-item
+                cursor pointer
+                display inline-block
+                font-style normal
+                padding 0 5px
+                &:hover
+                    .iconfont
+                        color #de6d49
+            .opr-item.position
+                .iconfont
+                    color #de6d49
+                &:hover
+                    .iconfont
+                        color #de6d49
             &:nth-child(odd)
                 background rgba(234, 234, 234, 0.68)
             &:hover
